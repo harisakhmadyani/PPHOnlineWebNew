@@ -1,0 +1,349 @@
+<script type="text/javascript">
+    function saveRoleDateTime(){
+        $url = "/PlgRequest/Master/AjaxSaveRoleDateTime";
+
+        $daterange =  $('#reservationtime').val().trim();
+        $date1 = $daterange.substring(0, 10);
+        $time1 = $daterange.substring(11, 16);
+        $date2 = $daterange.substring(19, 29);
+        $time2 = $daterange.substring(30, 35);
+
+        var $datetime1 = $date1.split(/\//).reverse().join('/')+' '+$time1;
+        var $datetime2 = $date2.split(/\//).reverse().join('/')+' '+$time2;
+
+        $.ajax({
+            url: $url,
+            data: {
+                openDate : $datetime1, closeDate : $datetime2
+            },
+            type: "POST",
+            success: function(response){
+                if(response.msg == "ok"){
+                    swal({
+                        title: 'Success',
+                        text: "Success To Save",
+                        type: 'success'
+                    }, function(isConfirm){   
+                        if (isConfirm) {
+                            console.log('oke');
+                            //getLastRoleDateTime();
+                            document.location.reload(true);
+                        }
+                    });
+                }                    
+                else{
+                    swal({
+                        title: 'Error',
+                        text: "Failed To Save",
+                        type: 'error'
+                    }, function(isConfirm){   
+                        if (isConfirm) { 
+                        }
+                    });
+                }
+            }
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    function getLastRoleDateTime(){
+        $url = "/PlgRequest/Master/AjaxGetLastRoleDateTime";
+        $.ajax({
+            url: $url,
+            type: "GET",
+            success: function(response){
+                $("#lastRoleDateTime").html(response);
+            }
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    function saveBudgetPeriod(){
+        $url = "/PlgRequest/Master/AjaxSaveBudgetPeriod";
+
+        $budgetYear =  $('#budgetYear').val();
+        $budgetMonth = $('#budgetMonth').val();
+
+        if($budgetMonth != "" && $budgetYear != ""){
+            $.ajax({
+                url: $url,
+                data: {
+                    budgetYear : $budgetYear, budgetMonth : $budgetMonth
+                },
+                type: "POST",
+                success: function(response){
+                    if(response.msg == "ok"){
+                        swal({
+                            title: 'Success',
+                            text: "Success To Save",
+                            type: 'success'
+                        }, function(isConfirm){   
+                            if (isConfirm) {
+                                console.log('oke');
+                                getLastBudgetPeriod();
+                                //document.location.reload(true);
+                            }
+                        });
+                    }                    
+                    else{
+                        swal({
+                            title: 'Error',
+                            text: "Failed To Save",
+                            type: 'error'
+                        }, function(isConfirm){   
+                            if (isConfirm) { 
+                            }
+                        });
+                    }
+                }
+            });
+        } else {
+            swal({
+                title: 'Warning',
+                text: 'Please Choose Budget Period..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    function getLastBudgetPeriod(){
+        $url = "/PlgRequest/Master/AjaxGetLastBudgetPeriod";
+        $.ajax({
+            url: $url,
+            type: "GET",
+            success: function(response){
+                $("#lastBudgetPeriod").html(response);
+            }
+        });
+    }
+</script>
+
+<script>
+    function getitem(){
+        $id = $("#subcat").val();        
+
+        if($id != ""){
+            $("body").css("cursor", "progress");
+            document.getElementById("search").disabled = true;
+            
+            $url = "/PlgRequest/Master/AjaxGetItem?id="+$id;
+            $.ajax({
+                url: $url,
+                type: "GET",
+                success: function(response){
+                    $("#itemSupplier").html(response);
+                    $("body").css("cursor", "default");
+                    document.getElementById("search").disabled = false;
+                }
+            });
+        } else{
+            swal({
+                title: 'Warning',
+                text: 'Please Choose Sub Category..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        }
+    }
+
+    function chooseItem(id, name, desc, newitemid){
+        @* $("body").css("cursor", "progress");
+        document.getElementById("choose").disabled = true; *@
+
+        $url = "/PlgRequest/Master/AjaxSaveMyItem?itemID="+id+"&newItemID="+newitemid;
+        $.ajax({
+            url: $url,
+            type: "GET",
+            success: function(response){
+                if(response.res.msg == "Success To Save"){                
+                    swal({
+                        title: 'Success',
+                        text: response.res.msg,
+                        type: 'success'
+                    }, function(isConfirm){   
+                        if (isConfirm) {
+                            removeRow(id);
+                            var table = document.getElementById("datatables");
+                            var row = table.insertRow(1);
+                            var cell1 = row.insertCell(0);
+                            var cell2 = row.insertCell(1);
+                            var cell3 = row.insertCell(2);
+                            var cell4 = row.insertCell(3);
+                            cell1.innerHTML = name;
+                            cell2.innerHTML = desc;
+                            cell3.innerHTML = '';
+                            cell4.innerHTML = '<button type="button" class="btn bg-gradient-danger btn-sm" onclick="removeItem(this, '+id+', '+newitemid+')"><i class="far fa-trash-alt mr-1"></i>Remove</button>';
+                            @* $("body").css("cursor", "default");
+                            document.getElementById("choose").disabled = false; *@
+                        }
+                    });
+                } else {
+                    swal({
+                        title: 'Error',
+                        text: 'Failed To Save',
+                        type: 'error'
+                    }, function(isConfirm){   
+                        if (isConfirm) { 
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function removeRow(id){
+        $('#'+id).remove();
+    }
+</script>
+
+<script>
+    function removeItem(btn, id, newitemid) {
+        $url = "/PlgRequest/Master/AjaxRemoveMyItem?itemID="+id+"&newItemID="+newitemid;
+        $.ajax({
+            url: $url,
+            type: "GET",
+            success: function(response){
+                if(response.res.msg == "Success To Remove"){                
+                    swal({
+                        title: 'Success',
+                        text: response.res.msg,
+                        type: 'success'
+                    }, function(isConfirm){   
+                        if (isConfirm) {
+                            var row = btn.parentNode.parentNode;
+                            row.parentNode.removeChild(row);
+                        }
+                    });
+                } else {
+                    swal({
+                        title: 'Error',
+                        text: 'Failed To Remove',
+                        type: 'error'
+                    }, function(isConfirm){   
+                        if (isConfirm) { 
+                        }
+                    });
+                }
+            }
+        });        
+    }
+
+    function refreshItemOpenPrice(){          
+        $("body").css("cursor", "progress");
+        document.getElementById("search").disabled = true;
+        
+        $url = "/PlgRequest/Master/AjaxRefreshItemOpenPrice";
+        $.ajax({
+            url: $url,
+            type: "POST",
+            success: function(response){
+                if(response.msg == "ok"){
+                    swal({
+                            title: 'Success',
+                            text: "Success To Refresh",
+                            type: 'success'
+                        }, function(isConfirm){   
+                            if (isConfirm) {
+                                $("body").css("cursor", "default");
+                                document.getElementById("search").disabled = false;
+                            }
+                        });
+                }
+                else{
+                    swal({
+                        title: 'Error',
+                        text: "Failed To Refresh",
+                        type: 'error'
+                    }, function(isConfirm){   
+                        if (isConfirm) {
+                            $("body").css("cursor", "default");
+                            document.getElementById("search").disabled = false; 
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function getitemopenprice(){
+        $id = $("#subcat").val();
+          
+        $("body").css("cursor", "progress");
+        document.getElementById("search").disabled = true;
+        
+        $url = "/PlgRequest/Master/AjaxGetItemOpenPrice?subCat=" + $id;
+        $.ajax({
+            url: $url,
+            type: "GET",
+            success: function(response){
+                $("#isidetail").html(response);
+                $("body").css("cursor", "default");
+                document.getElementById("search").disabled = false;
+            }
+        });
+    }
+</script>
+
+<script>
+    function pagesMyItem(pages){
+        $itemName = "";
+          
+        $("body").css("cursor", "progress");
+        
+        $url = "/PlgRequest/Master/AjaxGetPagesMyItem?pages=" + pages;
+        $.ajax({
+            url: $url,
+            type: "GET",
+            success: function(response){
+                $("#isidetail").html(response);
+                $("body").css("cursor", "default");
+            }
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $('#reservationtime').daterangepicker({
+            timePicker: true,
+            locale: {
+                format: 'DD/MM/YYYY HH:mm'
+            }
+        });
+
+        $('#reservationtime2').daterangepicker({
+            timePicker: true,
+            locale: {
+                format: 'DD/MM/YYYY HH:mm'
+            }
+        });
+
+        $('#reservationdate').datetimepicker({
+            format: 'DD/MM/YYYY HH:mm'
+        });
+
+        $('.select2-ctg').select2({
+            allowClear : true,
+            placeholder: 'Choose Sub Category...'
+        });
+
+        $('.select2-bln').select2({
+            allowClear : true,
+            placeholder: 'Choose Month...'
+        });
+
+        $('.select2-thn').select2({
+            allowClear : true,
+            placeholder: 'Choose Year...'
+        });
+    })
+</script>

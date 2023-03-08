@@ -1,0 +1,58 @@
+@* @model ItemRequest *@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-default card-outline">
+                <div class="card-header">
+                    <h3 class="card-title brand-text font-weight-light">
+                        <i class="fas fa-table mr-1"></i>
+                            <b>List</b> Price 
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-hover dtr-inline" id="datatables">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 25%;"><h3 class="card-title brand-text font-weight-light"><b>Item</b></h3></th>
+                                        <th style="width: 5%;"><h3 class="card-title brand-text font-weight-light"><b>UOM</b></h3></th>
+                                        <th style="width: 5%;"><h3 class="card-title brand-text font-weight-light"><b>Qty</b></h3></th>
+                                        <th style="width: 10%;"><h3 class="card-title brand-text font-weight-light"><b>Price / UOM</b></h3></th>
+                                        <th style="width: 10%;"><h3 class="card-title brand-text font-weight-light"><b>Valid Until</b></h3></th>
+                                        <th style="width: 10%;"><h3 class="card-title brand-text font-weight-light"><b>Delivery Date</b></h3></th>
+                                        <th style="width: 10%;"><h3 class="card-title brand-text font-weight-light"><b>Remark</b></h3></th>
+                                        <th style="width: 7%;"><h3 class="card-title brand-text font-weight-light"><b>Action</b></h3></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>                                            
+                                        <td>Mouse</td>
+                                        <td>Piece</td>
+                                        <td style="text-align: right;">100</td>
+                                        <td style="text-align: right;">10.000</td>
+                                        <td style="text-align: center;">09-09-2020</td>
+                                        <td style="text-align: center;">09-09-2020</td>
+                                        <td>Oke</td>                                        
+                                        <td style="vertical-align: middle; text-align: center;">
+                                            <button type="button" class="btn bg-gradient-primary" data-toggle="modal" data-target="#modal-lg"><i class="fas fa-cogs mr-1"></i>Action</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  
+
+
+<!-- ================================================ modul supplier ================================================== -->
+<script type="text/javascript">
+    $(function () {
+        $('#datatables').DataTable({
+        });
+    })
+</script>

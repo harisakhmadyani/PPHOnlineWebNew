@@ -1,0 +1,134 @@
+<Script type="text/javascript">
+    function saveData(){
+        var groupAccessID = $('#groupAccessID').val();
+        var groupAccessName = $('#groupAccessName').val();
+        
+        $url = "/PlgRequest/Utilitys/AjaxSaveGroupAccess";
+        
+        $.ajax({
+            url: $url,
+            data: {
+                groupAccessID : groupAccessID, groupAccessName : groupAccessName
+            },
+            type: "POST",
+            success: function(response){
+                if(response.msg == "ok"){
+                    swal({
+                            title: 'Success',
+                            text: "Success To Save",
+                            type: 'success'
+                        }, function(isConfirm){   
+                            if (isConfirm) {
+                                location.reload(true);
+                            }
+                        });
+                }
+                else{
+                    swal({
+                        title: 'Error',
+                        text: "Failed To Save",
+                        type: 'error'
+                    }, function(isConfirm){   
+                        if (isConfirm) {
+                            $('#modal-xl').modal('hide');
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function showModalEdit(groupAccessID, groupAccessName){
+        $('#groupAccessIDEdit').val(groupAccessID);
+        $('#groupAccessNameEdit').val(groupAccessName);
+        $('#modal-xl-edit').modal('show');
+    }
+
+    function updateData(){
+        var groupAccessID = $('#groupAccessIDEdit').val();
+        var groupAccessName = $('#groupAccessNameEdit').val();
+        
+        $url = "/PlgRequest/Utilitys/AjaxUpdateGroupAccess";
+        
+        $.ajax({
+            url: $url,
+            data: {
+                groupAccessID : groupAccessID, groupAccessName : groupAccessName
+            },
+            type: "POST",
+            success: function(response){
+                if(response.msg == "ok"){
+                    swal({
+                            title: 'Success',
+                            text: "Success To Update",
+                            type: 'success'
+                        }, function(isConfirm){   
+                            if (isConfirm) {
+                                location.reload(true);
+                            }
+                        });
+                }
+                else{
+                    swal({
+                        title: 'Error',
+                        text: "Failed To Update",
+                        type: 'error'
+                    }, function(isConfirm){   
+                        if (isConfirm) {
+                            $('#modal-xl-edit').modal('hide');
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function deleteData(btn, groupAccessID){
+        $url = "/PlgRequest/Utilitys/AjaxDeleteGroupAccess";
+        
+        $.ajax({
+            url: $url,
+            data: {
+                groupAccessID : groupAccessID
+            },
+            type: "POST",
+            success: function(response){
+                if(response.msg == "ok"){
+                    swal({
+                            title: 'Success',
+                            text: "Success To Non-Active",
+                            type: 'success'
+                        }, function(isConfirm){   
+                            if (isConfirm) {
+                                var row = btn.parentNode.parentNode;
+                                row.parentNode.removeChild(row);
+                            }
+                        });
+                }
+                else{
+                    swal({
+                        title: 'Error',
+                        text: "Failed To Non-Active",
+                        type: 'error'
+                    }, function(isConfirm){   
+                        if (isConfirm) {
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function saveMenuAccess(){
+        var checkbox = document.getElementsByName("menu");
+
+        var menu = [];
+        for(var i = 0; i < checkbox.length; i++){
+            if(checkbox[i].checked){
+                menu.push(checkbox[i].value);
+            }
+        }
+
+        console.log(menu);
+    }
+</Script>

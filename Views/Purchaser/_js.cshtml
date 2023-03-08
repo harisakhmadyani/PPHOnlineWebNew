@@ -1,0 +1,137 @@
+<script>
+    function getitem(){        
+        $id = $("#subcat").val();     
+        
+        @* if($id != ""){ *@
+            @* $(document).ajaxStart(function() {
+                    $('#isidetail').html('<div id="loading"><p style="text-align:center; margin-top: 5%;"><img src="@Url.Content("~/images/loading.gif")"></p></div>');
+                }); *@            
+            $("body").css("cursor", "progress");
+            document.getElementById("search").disabled = true;
+
+            $url = "/PlgRequest/Purchaser/AjaxGetItem?id=" + $id;
+            $.ajax({
+                url: $url,
+                type: "GET",
+                success: function(response){
+                    $("#isidetail").html(response);                    
+                    $("body").css("cursor", "default");
+                    document.getElementById("search").disabled = false;
+                }
+            });
+        @* } else{
+            swal({
+                title: 'Warning',
+                text: 'Please Choose Sub Category..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        } *@
+    }
+
+    function getitem2(){
+        $bln = $("#bln").val();
+        $thn = $("#thn").val();
+        
+        $url = "/PlgRequest/Purchaser/AjaxGetItem2?bln="+$bln+"&thn="+$thn;
+        $.ajax({
+            url: $url,
+            type: "GET",
+            success: function(response){
+                $("#isidetail").html(response);
+            }
+        });
+    }
+
+    function PriceToPPH(id, item, supp, period){
+        @* $("body").css("cursor", "progress");
+        document.getElementById("import").disabled = true; *@
+
+        $url = "/PlgRequest/Purchaser/AjaxSaveToPPH?item="+ item +"&supp="+ supp +"&period="+ period;
+        $.ajax({
+            url: $url,
+            type: "GET",
+            success: function(response){
+                if(response.msg2 == "ok"){                
+                    swal({
+                        title: 'Success',
+                        text: response.dts.msg,
+                        type: 'success'
+                    }, function(isConfirm){   
+                        if (isConfirm) {
+                            removeRow(id);
+                            @* $("body").css("cursor", "default");
+                            document.getElementById("import").disabled = false; *@
+                            @* getitem();   *@
+                            @* document.location.reload(true); *@
+                        }
+                    });
+                } else {
+                    swal({
+                        title: 'Error',
+                        text: 'Failed Import To PPH',
+                        type: 'error'
+                    }, function(isConfirm){   
+                        if (isConfirm) { 
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function PriceToNewItem(id){
+        $url = "/PlgRequest/Purchaser/AjaxUpdateToNewItem?id="+ id;
+        $.ajax({
+            url: $url,
+            type: "GET",
+            success: function(response){
+                if(response.msg2 == "ok"){                
+                    swal({
+                        title: 'Success',
+                        text: response.dts.msg,
+                        type: 'success'
+                    }, function(isConfirm){   
+                        if (isConfirm) {
+                            removeRow(id);
+                        }
+                    });
+                } else {
+                    swal({
+                        title: 'Error',
+                        text: 'Failed Import To PPH',
+                        type: 'error'
+                    }, function(isConfirm){   
+                        if (isConfirm) { 
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function removeRow(id){
+        $('#'+id).remove();
+    }
+</script>
+
+<script type="text/javascript">
+  $(function () {
+      $('.select2-ctg').select2({
+          allowClear : true,
+          placeholder: 'Choose Sub Category...'
+      });
+
+      $('.select2-bln').select2({
+          allowClear : true,
+          placeholder: 'Choose Month...'
+      });
+
+      $('.select2-thn').select2({
+          allowClear : true,
+          placeholder: 'Choose Year...'
+      });
+  })
+</script>

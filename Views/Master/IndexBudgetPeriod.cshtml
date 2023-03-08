@@ -1,0 +1,110 @@
+@model BudgetPeriod
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+    <div class="row mb-2">
+        <div class="col-sm-6">
+        <h1 class="m-0 text-dark"> Master <small>Input Budget Period</small></h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Master</a></li>
+            @* <li class="breadcrumb-item"><a href="#">Input Price</a></li> *@
+            <li class="breadcrumb-item active">Input Budget Period</li>
+        </ol>
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                    <h3 class="card-title brand-text font-weight-light">
+                        <i class="fas fa-cogs mr-1"></i>
+                        <b>Set</b> Budget Period
+                    </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label"><h3 class="card-title brand-text font-weight-light"><b>Budget Period</b></h3></label>
+                                <div class="col-4" id="">
+                                    <div class="input-group">
+                                        <select class="form-control select2-bln" style="width: 100%;" id="budgetMonth">
+                                            <option value=""></option>
+                                            @{
+                                                var bln = 1;
+                                                for(int i= 0; i<12; i++){
+                                                    <option value="@bln">@bln</option>
+                                                    bln++;
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-4" id="">
+                                    <div class="input-group">
+                                        <select class="form-control select2-thn" style="width: 100%;" id="budgetYear">
+                                            <option value=""></option>
+                                            @{
+                                                var thn = 2020;
+                                                for(int i= 0; i<12; i++){
+                                                    <option value="@thn">@thn</option>
+                                                    thn++;
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn bg-gradient-primary" onclick="saveBudgetPeriod()"><i class="fa fa-save mr-1"></i>Set Period</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.container-fluid -->
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-default card-outline">
+                <div class="card-header">
+                    <h3 class="card-title brand-text font-weight-light">
+                        <i class="fas fa-calendar-check mr-1"></i>
+                            <b>Current</b> Budget Period 
+                    </h3>
+                </div>
+                <div id="lastBudgetPeriod">
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label"><h3 class="card-title brand-text font-weight-light"><b>Budget Period</b></h3></label>
+                                <div class="col-8" id="roleDateTime">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-calendar-check"></i></span>
+                                        </div>
+                                        @{
+                                            var budgetPeriod = Model.BudgetMonth+"-"+Model.BudgetYear;
+                                        }
+                                        <input type="text" class="form-control float-right" id="budgetPeriod" value="@budgetPeriod" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<partial name="_js.cshtml">
+@* <partial name="_modal.cshtml"> *@

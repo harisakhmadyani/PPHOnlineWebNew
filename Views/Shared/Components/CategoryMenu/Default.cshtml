@@ -1,0 +1,28 @@
+<ul class="navbar-nav">
+@{
+    if(ViewBag.MenuHdr != null){
+        foreach(var item in ViewBag.MenuHdr){
+            if(item.sub){
+                <li class="nav-item dropdown">
+                    <a id="@item.id" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link brand-text font-weight-light">@item.name<i class="fas fa-chevron-circle-down ml-2"></i></a>
+                    <ul aria-labelledby="@item.id" class="dropdown-menu dropdown-menu-lg border-0 shadow">
+                        @{
+                            if(ViewBag.MenuDtl != null){
+                                foreach(var items in ViewBag.MenuDtl){
+                                    if(items.hdrid == item.id){                        
+                                        <li><a href="@items.url" class="dropdown-item brand-text">@items.name</a></li>
+                                    }
+                                }
+                            }
+                        }
+                    </ul>
+                </li>
+            } else{
+                <li class="nav-item">
+                    <a href="@item.url" class="nav-link brand-text font-weight-light">@item.name</a>
+                </li>
+            }
+        }
+    }
+}
+</ul>

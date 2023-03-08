@@ -1,0 +1,90 @@
+@model RoleDateTime
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+    <div class="row mb-2">
+        <div class="col-sm-6">
+        <h1 class="m-0 text-dark"> Master <small>Input Role Date Time</small></h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Master</a></li>
+            @* <li class="breadcrumb-item"><a href="#">Input Price</a></li> *@
+            <li class="breadcrumb-item active">Input Role Date Time</li>
+        </ol>
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                    <h3 class="card-title brand-text font-weight-light">
+                        <i class="fas fa-cogs mr-1"></i>
+                        <b>Set</b> Role Date Time
+                    </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label"><h3 class="card-title brand-text font-weight-light"><b>Open Date - Close Date</b></h3></label>
+                                <div class="col-8">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control float-right" id="reservationtime">
+                                    </div>
+                                </div> 
+                                <button type="button" class="btn bg-gradient-primary" onclick="saveRoleDateTime()"><i class="fa fa-save mr-1"></i>Set Date Time</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.container-fluid -->
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-default card-outline">
+                <div class="card-header">
+                    <h3 class="card-title brand-text font-weight-light">
+                        <i class="fas fa-calendar-check mr-1"></i>
+                            <b>Current</b> Role Date Time 
+                    </h3>
+                </div>
+                <div id="lastRoleDateTime">
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label"><h3 class="card-title brand-text font-weight-light"><b>Open Date - Close Date</b></h3></label>
+                                <div class="col-8" id="roleDateTime">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                        </div>
+                                        @{
+                                            var roleDateTime = Model.OpenDate.ToString("dd/MM/yyyy HH:mm")+" - "+Model.CloseDate.ToString("dd/MM/yyyy HH:mm");
+                                        }
+                                        <input type="text" class="form-control float-right" id="" value="@roleDateTime" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<partial name="_js.cshtml">
+@* <partial name="_modal.cshtml"> *@

@@ -1,0 +1,117 @@
+@model ItemRequest
+@{
+    var CountPage = Math.Ceiling(ViewBag.CountPage / 500);
+    var CurrentPage = ViewBag.CurrentPage;
+    var disPrev = "";
+    var disNext = "";
+    var fontWeightPrev = "";
+    var fontWeightNext = "normal";
+    var prevPage = CurrentPage - 1;
+    var nextPage = CurrentPage + 1;
+    if (CurrentPage == 1)
+    {
+        disPrev = "disabled";
+        fontWeightPrev = "bold";
+    }
+    if (CurrentPage == CountPage)
+    {
+        disNext = "disabled";
+        fontWeightNext = "bold";
+    }
+}
+<div class="card-body">
+    <div class="col-md-12">
+        <div class="table-responsive" style="height: 500px;">
+            <table class="table table-hover dtr-inline table-head-fixed" id="datatables">
+                <thead>
+                    <tr>
+                        <th style="width: 40%;"><h3 class="card-title brand-text font-weight-light"><b>Item</b></h3></th>
+                        <th style="width: 5%;"><h3 class="card-title brand-text font-weight-light"><b>Factory</b></h3></th>
+                        <th style="width: 5%;"><h3 class="card-title brand-text font-weight-light"><b>UOM</b></h3></th>
+                        <th style="width: 5%;"><h3 class="card-title brand-text font-weight-light"><b>Qty</b></h3></th>
+                        <th style="width: 7%;"><h3 class="card-title brand-text font-weight-light"><b>Usage / Year</b></h3></th>
+                        <th style="width: 2%;"><h3 class="card-title brand-text font-weight-light"><b>Images</b></h3></th>
+                        <th style="width: 5%;"><h3 class="card-title brand-text font-weight-light"><b>Action</b></h3></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(Model.data != null){
+                        @foreach (var item in Model.data)
+                        {
+                            var qnty2 = item.Qnty.ToString();
+                            var qtyrt2 = item.QtyRt.ToString();
+
+                            @* var qnty2 = qnty.Replace(".", ",");
+                            var qtyrt2 = qtyrt.Replace(".", ","); *@
+                            var image = item.ItemID+".jpg";
+                            <tr id='@item.ItemID'>                                            
+                                <td>
+                                    @item.ItemName<br>
+                                    @item.ItemDesc
+                                </td>
+                                <td>@item.Factory</td>
+                                <td>@item.UOMName</td>
+
+                                @if (qnty2.Substring(qnty2.Length - 3) == ".00"){
+                                    <td style="text-align: right;" class="autonum_nondecimal">@qnty2</td>
+                                } else{
+                                    <td style="text-align: right;" class="autonum_price">@qnty2</td>
+                                }
+
+                                @if (qtyrt2.Substring(qtyrt2.Length - 2) == ".0"){
+                                    <td style="text-align: right;" class="autonum_nondecimal">@qtyrt2</td>
+                                } else{
+                                    <td style="text-align: right;" class="autonum_price">@qtyrt2</td>
+                                }
+
+                                <td style="text-align: center;"><a href="~/ItemImage/@image" data-toggle="lightbox" class="btn btn-success btn-icon btn-circle btn-sm"><i class="fa fa-eye"></i></a></td>
+                                <td style="vertical-align: middle; text-align: center;">
+                                    <button type="button" class="btn bg-gradient-primary btn-sm" data-toggle="modal" data-target="#modal-lg" onclick="isidetail('@item.ItemID', '@item.ItemName', '@item.ItemDesc', '@item.UOMName' ,'@qnty2', '@qtyrt2', '@item.NewItemID')"><i class="fas fa-usd mr-1"></i>Add Price</button>
+                                </td>
+                            </tr>  
+                        }
+                    }
+                </tbody>
+            </table>
+            <a href="DownloadMyProductItem?pages=@CurrentPage" class="btn bg-gradient-danger btn-sm"><i class="far fa-file-pdf mr-1"></i>Download PDF</a>
+        </div>
+    </div>
+</div>
+<div class="card-footer clearfix">
+    <div class="pagination pagination-sm m-0 float-left">Page @CurrentPage of @CountPage</div>
+    <ul class="pagination pagination-sm m-0 float-right">
+        <li class="page-item"><button type="button" class="page-link" onclick="pagesMyProductItem(@prevPage)" @disPrev style="font-weight: @fontWeightPrev;">&laquo; Previous</button></li>
+        @for(int i = 1; i <= @CountPage ; i++)
+        {
+            var disCur = "";
+            var fontWeightCur = "normal";
+            if (CurrentPage == i)
+            {
+                disCur = "disabled";
+                fontWeightCur = "bold";
+            }
+            <li class="page-item"><button type="button" class="page-link" onclick="pagesMyProductItem(@i)" @disCur style="font-weight: @fontWeightCur;">@i</button></li>
+        }
+        <li class="page-item"><button type="button" class="page-link" onclick="pagesMyProductItem(@nextPage)" @disNext style="font-weight: @fontWeightNext;">Next &raquo;</button></li>
+    </ul>
+</div>
+<!-- ================================================ modul supplier ================================================== -->
+<script type="text/javascript">
+    $(function () {
+        $('#datatables').DataTable({
+            "paging": false
+        });
+
+        $('.autonum_price').autoNumeric('init', {
+            mDec: 2,
+            aDec: '.',
+            aSep: ','
+        });
+
+        $('.autonum_nondecimal').autoNumeric('init', {
+            mDec: 0,
+            aDec: '.',
+            aSep: ','
+        });
+    })
+</script>

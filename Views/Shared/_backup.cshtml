@@ -1,0 +1,149 @@
+ <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark"> Top Navigation <small>Example 3.0</small></h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Layout</a></li>
+              <li class="breadcrumb-item active">Top Navigation</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="card card-default">
+          <div class="card-header">
+            <h3 class="card-title">Form Elements</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+              <!-- <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button> -->
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <form class="form-horizontal">
+          <div class="card-body">
+
+            <div class="form-group row">
+              <label class="col-md-2 col-form-label">Textbox</label>
+              <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="Textbox">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-2 col-form-label">Date</label>
+              <div class="col-md-4">
+                <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                    <div class="input-group-prepend" data-target="#reservationdate" data-toggle="datetimepicker">
+                      <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                    </div>
+                    <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" placeholder="dd/mm/yyyy" />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-2 col-form-label">Select2</label>
+              <div class="col-md-4">
+                <select class="form-control select2" style="width: 100%;">
+                    <option></option>
+                    <option>Alaska</option>
+                    <option>California</option>
+                    <option>Delaware</option>
+                    <option>Tennessee</option>
+                    <option>Texas</option>
+                    <option>Washington</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-2 col-form-label">Checkbox</label>
+              <div class="col-md-4">
+                <div class="icheck-primary d-inline">
+                  <input type="checkbox" id="checkboxPrimary1" checked>
+                  <label for="checkboxPrimary1">
+                  </label>
+                </div>
+                <div class="icheck-danger d-inline">
+                  <input type="checkbox" checked id="checkboxDanger1">
+                  <label for="checkboxDanger1">
+                  </label>
+                </div>
+                <div class="icheck-success d-inline">
+                  <input type="checkbox" checked id="checkboxSuccess1">
+                  <label for="checkboxSuccess1">
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-2 col-form-label">Radio</label>
+              <div class="col-md-4">
+                <div class="icheck-primary d-inline">
+                  <input type="radio" id="radioPrimary1" name="r1" checked>
+                  <label for="radioPrimary1">
+                  </label>
+                </div>
+                <div class="icheck-danger d-inline">
+                  <input type="radio" name="r1" id="radioDanger1">
+                  <label for="radioDanger1">
+                  </label>
+                </div>
+                <div class="icheck-success d-inline">
+                  <input type="radio" name="r1" id="radioSuccess1">
+                  <label for="radioSuccess1">
+                  </label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          </form>
+          <!-- /.card-body -->
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-1"></i>Save</button>
+            <button type="submit" class="btn btn-default"><i class="fas fa-times mr-1"></i>Cancel</button>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+
+
+
+    <!-- Level two dropdown-->
+              <li class="dropdown-submenu dropdown-hover">
+                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle brand-text">Hover for action</a>
+                <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu dropdown-menu-lg border-0 shadow">
+                  <li>
+                    <a tabindex="-1" href="#" class="dropdown-item brand-text">level 2</a>
+                  </li>
+
+                  <!-- Level three dropdown-->
+                  <li class="dropdown-submenu">
+                    <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle brand-text">level 2</a>
+                    <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu dropdown-menu-lg border-0 shadow">
+                      <li><a href="#" class="dropdown-item brand-text">3rd level</a></li>
+                      <li><a href="#" class="dropdown-item brand-text">3rd level</a></li>
+                    </ul>
+                  </li>
+                  <!-- End Level three -->
+
+                  <li><a href="#" class="dropdown-item brand-text">level 2</a></li>
+                  <li><a href="#" class="dropdown-item brand-text">level 2</a></li>
+                </ul>
+              </li>
+              <!-- End Level two -->

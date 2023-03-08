@@ -1,0 +1,72 @@
+<div class="content-header">
+    <div class="container-fluid">
+    <div class="row mb-2">
+        <div class="col-sm-6">
+        <h1 class="m-0 text-dark"> Monitoring Supplier <small>My Price</small></h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Monitoring Supplier</a></li>
+            <li class="breadcrumb-item active">My Prices</li>
+        </ol>
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title brand-text font-weight-light">
+                            <i class="fas fa-search mr-1"></i>
+                            <b>Search</b> Period                            
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label"><h3 class="card-title brand-text font-weight-light"><b>Period</b></h3></label>
+                                <div class="col-4" id="">
+                                    <select class="form-control select2-bln" style="width: 100%;" id="budgetMonth">
+                                        <option value=""></option>
+                                        @{
+                                            var bln = 1;
+                                            for(int i= 0; i<12; i++){
+                                                <option value="@bln">@bln</option>
+                                                bln++;
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-4" id="">
+                                    <select class="form-control select2-thn" style="width: 100%;" id="budgetYear">
+                                        <option value=""></option>
+                                        @{
+                                            var thn = 2020;
+                                            for(int i= 0; i<12; i++){
+                                                <option value="@thn">@thn</option>
+                                                thn++;
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <button type="button" class="btn bg-gradient-primary" id="search" onclick="getmonmyprice()"><i class="fa fa-search mr-1"></i>Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- /.col -->
+            </div>
+        <!-- /.card -->
+        </div>
+    </div>
+
+    <!-- /.container-fluid -->
+    <div id="isidetail">
+    </div>
+</section>
+
+<partial name="_js.cshtml">

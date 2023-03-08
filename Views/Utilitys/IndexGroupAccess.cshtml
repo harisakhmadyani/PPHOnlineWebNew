@@ -1,0 +1,81 @@
+@model GroupAccess
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+    <div class="row mb-2">
+        <div class="col-sm-6">
+        <h1 class="m-0 text-dark"> Utility <small>Group Access</small></h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Utility</a></li>
+            @* <li class="breadcrumb-item"><a href="#">Input Price</a></li> *@
+            <li class="breadcrumb-item active">Group Access</li>
+        </ol>
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title brand-text font-weight-light">
+                            <i class="fas fa-table mr-1"></i>
+                                <b>List</b> Group Access 
+                        </h3>
+                        <button type="button" class="btn bg-gradient-primary btn-sm" data-toggle="modal" data-target="#modal-xl" style="float: right;"><i class="fas fa-plus mr-1"></i>Create New</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="table-responsive" style="height: 500px;">
+                                <table class="table table-hover dtr-inline table-head-fixed" id="datatables">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 15%;"><h3 class="card-title brand-text font-weight-light"><b>Group Access ID</b></h3></th>
+                                            <th style="width: 25%;"><h3 class="card-title brand-text font-weight-light"><b>Group Access Name</b></h3></th>
+                                            <th style="width: 50%;"><h3 class="card-title brand-text font-weight-light"><b>Action</b></h3></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if(Model.data != null){
+                                            @foreach (var item in Model.data)
+                                            {
+                                                <tr>                                            
+                                                    <td>@item.GroupAccessID</td> 
+                                                    <td>@item.GroupAccessName</td>                                                  
+                                                    <td>
+                                                        <a href="/PlgRequest/Utilitys/IndexMenuAccess?id=@item.GroupAccessID" class="btn bg-gradient-info btn-sm"><i class="fas fa-indent mr-1"></i>Menu Access</a>
+                                                        <a href="/PlgRequest/Utilitys/IndexSubCategoryAccess?id=@item.GroupAccessID" class="btn bg-gradient-success btn-sm"><i class="fas fa-list-ol mr-1"></i>Sub Category Access</a>
+                                                        <button type="button" class="btn bg-gradient-warning btn-sm" onclick="showModalEdit('@item.GroupAccessID', '@item.GroupAccessName')"><i class="fas fa-pencil-alt mr-1"></i>Edit</button>
+                                                        <button type="button" class="btn bg-gradient-danger btn-sm" onclick="deleteData(this, '@item.GroupAccessID')"><i class="fa fa-power-off mr-1"></i>Non-Active</button>
+                                                    </td>
+                                                </tr> 
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>  
+
+
+<!-- ================================================ modul supplier ================================================== -->
+<script type="text/javascript">
+    $(function () {
+        $('#datatables').DataTable({
+            "paging": false
+        });
+    })
+</script>
+
+<partial name="_js.cshtml">
+<partial name="_modal.cshtml">

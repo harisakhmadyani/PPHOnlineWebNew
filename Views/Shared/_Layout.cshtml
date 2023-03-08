@@ -1,0 +1,553 @@
+﻿@using Microsoft.AspNetCore.Http;
+@{
+    var username = Context.Session.GetString("_UserNames");
+}
+
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+  <title>Sambu Purchasing</title>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- daterange picker -->
+  <link rel="stylesheet" href="~/plugins/daterangepicker/daterangepicker.css">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- Bootstrap Color Picker -->
+  <link rel="stylesheet" href="~/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <!-- Tempusdominus Bbootstrap 4 -->
+  <link rel="stylesheet" href="~/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="~/plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <!-- Sweetalert-->
+  <link rel="stylesheet" href="~/plugins/sweetalert/sweetalert.css">
+  <!-- Bootstrap4 Duallistbox -->
+  <link rel="stylesheet" href="~/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="~/dist/css/adminlte.css">
+
+  <link rel="stylesheet" href="~/plugins/ekko-lightbox/ekko-lightbox.css">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+  <!-- jQuery -->
+  <script src="~/plugins/jquery/jquery.min.js"></script>
+
+</head>
+<body class="hold-transition layout-top-nav layout-navbar-fixed layout-footer-fixed">
+<div class="wrapper">
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand-md navbar-blue-word navbar-light">
+    <div class="container-fluid">
+      <a href="#" class="navbar-brand">
+        <img src="~/images/Logo_PS.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+             style="opacity: .8">
+        <span class="brand-text">Sambu Purchasing</span>
+      </a>
+      
+      <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+        <!-- Left navbar links -->
+        @* <ul class="navbar-nav">
+          <li class="nav-item">
+            <a href="/PlgRequest/Home/Index" class="nav-link brand-text font-weight-light">Home</a>
+          </li> *@
+          @* <li class="nav-item">
+            <a href="#" class="nav-link brand-text font-weight-light">Contact</a>
+          </li> *@
+          @* <li class="nav-item dropdown">
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link brand-text font-weight-light dropdown-toggle">Master</a>
+            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu dropdown-menu-lg border-0 shadow">
+              <li><a href="/PlgRequest/Master/IndexRoleDateTime" class="dropdown-item brand-text">Role Date Time</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link brand-text font-weight-light dropdown-toggle">Supplier</a>
+            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu dropdown-menu-lg border-0 shadow">
+              <li><a href="/PlgRequest/Supplier/Index" class="dropdown-item brand-text">Price Input</a></li> *@
+              @* <li><a href="/PlgRequest/Supplier/Index2" class="dropdown-item brand-text">Record Price</a></li> *@
+            @* </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link brand-text font-weight-light dropdown-toggle">Purchaser</a>
+            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu dropdown-menu-lg border-0 shadow">
+              <li><a href="/PlgRequest/Purchaser/Index" class="dropdown-item brand-text">Price To PPH</a></li> *@
+              @* <li><a href="/PlgRequest/Purchaser/Index2" class="dropdown-item brand-text">Supplier Price</a></li> *@
+            @* </ul>
+          </li>
+        </ul> *@
+        @await Component.InvokeAsync("CategoryMenu")
+      </div>
+
+      <!-- Right navbar links -->
+      <ul class="order-2 order-md-3 navbar-nav navbar-no-expand ml-auto">
+        <!-- Messages Dropdown Menu -->        
+        @* <li class="nav-item dropdown">
+          <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="fas fa-comments"></i>
+            <span class="badge badge-danger navbar-badge">3</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <a href="#" class="dropdown-item">
+              <!-- Message Start -->
+              <div class="media">
+                <img src="~/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                <div class="media-body">
+                  <h3 class="dropdown-item-title">
+                    Brad Diesel
+                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                  </h3>
+                  <p class="text-sm">Call me whenever you can...</p>
+                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                </div>
+              </div>
+              <!-- Message End -->
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <!-- Message Start -->
+              <div class="media">
+                <img src="~/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                <div class="media-body">
+                  <h3 class="dropdown-item-title">
+                    John Pierce
+                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                  </h3>
+                  <p class="text-sm">I got your message bro</p>
+                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                </div>
+              </div>
+              <!-- Message End -->
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <!-- Message Start -->
+              <div class="media">
+                <img src="~/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                <div class="media-body">
+                  <h3 class="dropdown-item-title">
+                    Nora Silvester
+                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                  </h3>
+                  <p class="text-sm">The subject goes here</p>
+                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                </div>
+              </div>
+              <!-- Message End -->
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="far fa-bell"></i>
+            <span class="badge badge-warning navbar-badge">15</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <span class="dropdown-header">15 Notifications</span>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-envelope mr-2"></i> 4 new messages
+              <span class="float-right text-muted text-sm">3 mins</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-users mr-2"></i> 8 friend requests
+              <span class="float-right text-muted text-sm">12 hours</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-file mr-2"></i> 3 new reports
+              <span class="float-right text-muted text-sm">2 days</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+          </div>
+        </li> *@
+        <li class="nav-item dropdown">
+          <a class="nav-link" data-toggle="dropdown" href="#">
+            <span class="brand-text font-weight-light" style="margin-right: 5px;">@username</span>
+            <img src="~/dist/img/default_user.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+             style="opacity: .8; margin-right: 0;">            
+          </a>
+           <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+            @* <a href="#" class="dropdown-item">
+              <i class="fas fa-user-alt mr-2"></i> My Profile
+            </a> *@
+            <a  href="#modal-changePassword" data-toggle="modal" class="dropdown-item">
+              <i class="fas fa-cogs mr-2"></i> Change Password
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="/PlgRequest/Login/LogOut" class="dropdown-item">
+              <i class="fas fa-sign-out-alt mr-2"></i> Logout
+            </a>
+          </div>          
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button"><i
+              class="fas fa-th-large"></i></a>
+        </li> -->
+      </ul>
+    </div>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Modal Change Password -->
+  <div class="modal fade" id="modal-changePassword">
+    <div class="modal-dialog modal-lg">
+        <form id="my_form">
+            <div class="modal-content">
+                <div class="modal-header bg-gradient-primary">
+                    <h5 class="modal-title brand-text font-weight-light"><i class="fas fa-pencil-square-o mr-1"></i><b>Change</b> Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label"><h3 class="card-title brand-text font-weight-light"><b>Old Password</b></h3></label>
+                            <div class="col-md-9">
+                                <input type="password" class="form-control" id="oldPassword">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label"><h3 class="card-title brand-text font-weight-light"><b>New Password</b></h3></label>
+                            <div class="col-md-9">
+                                <input type="password" class="form-control" id="newPassword">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times mr-1"></i>Close</button>
+                    <button type="button" class="btn bg-gradient-primary" onclick="saveChangePassword()"><i class="fas fa-save mr-1"></i>Save</button>
+                </div>
+            </div>
+        </form>
+    </div> 
+  </div>
+
+
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+      @RenderBody()
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Main Footer -->
+  <footer class="main-footer">
+    <!-- To the right -->
+    <div class="float-right d-none d-sm-inline">
+      <span class="text-danger"><b>Time remaining for input price </b><b id="prd"></b><i class="far fa-clock"></i> </span><span id="timeLeft0" class="text-danger"></span></h5>
+      @* <span class="text-danger"><b>The deadline for input price before </b><i class="far fa-clock"></i> </span><span id="timeLeft0" class="text-danger"></span></h5> *@
+    </div>
+    <!-- Default to the left -->
+    <strong>Copyright &copy; 2020 - @DateTime.Now.Year <a href="#">Sambu Purchasing </a>. ITD16 - F. Chan & ITD29 - HAY </strong> 
+  </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+
+<!-- jQuery -->
+@* <script src="~/plugins/jquery/jquery.min.js"></script> *@
+<!-- Bootstrap 4 -->
+<script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Select2 -->
+<script src="~/plugins/select2/js/select2.full.min.js"></script>
+<!-- Bootstrap4 Duallistbox -->
+<script src="~/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+<!-- InputMask -->
+<script src="~/plugins/moment/moment.min.js"></script>
+<script src="~/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+<!-- date-range-picker -->
+<script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap color picker -->
+<script src="~/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<!-- DataTables -->
+<script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<!-- separator autonumeric -->
+<script src="~/plugins/jq-autonumeric/autoNumeric.js"></script>
+<script src="~/plugins/jq-autonumeric/separator.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="~/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Sweetalert-->
+<script src="~/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- bs-custom-file-input -->
+<script src="~/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<!-- Bootstrap Switch -->
+<script src="~/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<!-- AdminLTE App -->
+<script src="~/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="~/dist/js/demo.js"></script>
+
+
+<script src="~/plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
+<script src="~/plugins/filterizr/jquery.filterizr.min.js"></script>
+</body>
+</html>
+
+<!-- ===================================================================================================================== -->
+<script type="text/javascript">
+  $(function () {
+    //Date range picker
+    $('#reservationdate').datetimepicker({
+        format: 'DD/MM/YYYY'
+        // format: 'DD/MM/YYYY hh:mm A'
+    });
+
+    $('#reservationdate2').datetimepicker({
+        format: 'DD/MM/YYYY'
+        // format: 'DD/MM/YYYY hh:mm A'
+    });
+
+    $('#reservationdate5').datetimepicker({
+        format: 'DD/MM/YYYY'
+        // format: 'DD/MM/YYYY hh:mm A'
+    });
+
+    $('#reservationdate52').datetimepicker({
+        format: 'DD/MM/YYYY'
+        // format: 'DD/MM/YYYY hh:mm A'
+    });
+
+    //$('.select2').select2({
+    //    allowClear : true,
+    //    placeholder: 'Selec2...'
+    //});
+    $(document).ready(function () {
+        bsCustomFileInput.init();
+    });
+  })
+</script>
+
+@* <script type="text/javascript">
+  $(function () {
+    $url = "/PlgRequest/Utilitys/GetLastRoleDateTimeWidget1";
+    $.ajax({
+        url: $url,
+        data: {},
+        type: "POST",
+        success: function(response){
+            var clDt0 = response.clsDt;
+            var clDt1 = clDt0.replace("T", "");
+
+            var yyyy = clDt1.substring(0,4);
+            var mm = clDt1.substring(5,7);
+            var dd = clDt1.substring(8,10);
+            var hhmmss = clDt1.substring(10,18);
+
+            var clDt = dd+"/"+mm+"/"+yyyy+" "+hhmmss;
+
+            // Keluarkan hasil dalam elemen dengan id = "demo"
+            document.getElementById("timeLeft0").innerHTML = clDt;
+        }
+    });
+  })
+</script> *@
+
+<script type="text/javascript">
+    $(function () {
+        var thisPage = window.location.toString();
+        $url = "/PlgRequest/Utilitys/GetLastRoleDateTimeWidget1";
+        $.ajax({
+            url: $url,
+            data: {},
+            type: "POST",
+            success: function(response){
+                var clsDt0 = response.clsDt;
+                var dtNw0 = response.dtNw;
+                var prdMn = response.prdMn;
+                var prdYr = response.prdYr;
+
+                var clsDt1 = clsDt0.replace("T", "");
+                var dtNw1 = dtNw0.replace("T", "");
+
+                var yyyy1 = clsDt1.substring(0,4);
+                var mm1 = clsDt1.substring(5,7);
+                var dd1 = clsDt1.substring(8,10);
+                var hhmmss1 = clsDt1.substring(10,18);
+
+                var yyyy0 = dtNw1.substring(0,4);
+                var mm0 = dtNw1.substring(5,7);
+                var dd0 = dtNw1.substring(8,10);
+                var hhmmss0 = dtNw1.substring(10,18);
+
+                var clsDt = mm1+"/"+dd1+"/"+yyyy1+" "+hhmmss1;
+                var dtNw = mm0+"/"+dd0+"/"+yyyy0+" "+hhmmss0;
+
+                // Mengatur waktu akhir perhitungan mundur
+                var countDownDate = new Date(clsDt).getTime();
+                var now = new Date(dtNw).getTime();
+
+                // Memperbarui hitungan mundur setiap 1 detik
+                var x = setInterval(function(){
+                    // Untuk mendapatkan tanggal dan waktu hari ini
+                    //var now = new Date().getTime();
+                    
+                    // Temukan jarak antara sekarang dan tanggal hitung mundur
+                    var distance = countDownDate - now;
+                    
+                    // Perhitungan waktu untuk hari, jam, menit dan detik
+                    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    
+                    // Keluarkan hasil dalam elemen dengan id = "demo"
+                    document.getElementById("prd").innerHTML = "( Period " + prdMn + "-" + prdYr + " ) ";
+                    document.getElementById("timeLeft0").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+                    
+                    // Jika hitungan mundur selesai, tulis beberapa teks 
+                    if (distance < 0) {
+                        clearInterval(x);
+                        if(thisPage == "http://apip2.myrsup.co.id:5009/PlgRequest/Supplier/Index"){
+                          document.location.reload(true);
+                        }
+                        document.getElementById("timeLeft0").innerHTML = "EXPIRED";
+                    }
+
+                    now = now+1000;
+                }, 1000);
+            }
+        });
+    })
+</script>
+
+<script type="text/javascript">
+  function saveChangePassword(){
+    $url = "/PlgRequest/Login/AjaxSaveChangePassword";
+
+    $oldPassword =  $('#oldPassword').val().trim();
+    $newPassword =  $('#newPassword').val().trim();
+
+    $.ajax({
+        url: $url,
+        data: {
+            oldPassword : $oldPassword, newPassword : $newPassword
+        },
+        type: "POST",
+        success: function(response){
+            if(response.msg == "ok"){
+                swal({
+                    title: 'Success',
+                    text: "Success To Change",
+                    type: 'success'
+                }, function(isConfirm){   
+                    if (isConfirm) {
+                    }
+                });
+            }                    
+            else{
+                swal({
+                    title: 'Error',
+                    text: "Failed To Change",
+                    type: 'error'
+                }, function(isConfirm){   
+                    if (isConfirm) { 
+                    }
+                });
+            }
+        }
+    });
+  }
+</script>
+
+<script>
+  $(function () {
+    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+      event.preventDefault();
+      $(this).ekkoLightbox({
+        alwaysShowClose: true
+      });
+    });
+
+    $('.filter-container').filterizr({gutterPixels: 3});
+    $('.btn[data-filter]').on('click', function() {
+      $('.btn[data-filter]').removeClass('active');
+      $(this).addClass('active');
+    });
+  })
+</script>
+
+@* <script type="text/javascript">
+  $(function () {
+    $url = "/PlgRequest/Utilitys/GetLastRoleDateTimeWidget1";
+    $.ajax({
+        url: $url,
+        data: {},
+        type: "POST",
+        success: function(response){
+          var dt0 = response.msg;
+          var dt1 = dt0.replace("T", "");
+
+          var yyyy = dt1.substring(0,4);
+          var mm = dt1.substring(5,7);
+          var dd = dt1.substring(8,10);
+          var hhmmss = dt1.substring(10,19);
+
+          var dt = mm+"/"+dd+"/"+yyyy+" "+hhmmss;
+
+          // Mengatur waktu akhir perhitungan mundur
+          var countDownDate = new Date(dt).getTime();
+
+          // Memperbarui hitungan mundur setiap 1 detik
+          var x = setInterval(function(){
+
+            // Untuk mendapatkan tanggal dan waktu hari ini
+            var now = new Date().getTime();
+              
+            // Temukan jarak antara sekarang dan tanggal hitung mundur
+            var distance = countDownDate - now;
+              
+            // Perhitungan waktu untuk hari, jam, menit dan detik
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+              
+            // Keluarkan hasil dalam elemen dengan id = "demo"
+            document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
+            + minutes + "m " + seconds + "s ";
+              
+            // Jika hitungan mundur selesai, tulis beberapa teks 
+            if (distance < 0) {
+              clearInterval(x);
+              //document.location.reload(true);
+              $('#timeLeft0').val(0);
+              document.getElementById("timeLeft").innerHTML = "EXPIRED";
+            }
+          }, 1000);                  
+        }
+    });
+  })
+</script> *@
+

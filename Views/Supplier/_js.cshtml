@@ -1,0 +1,684 @@
+<script>
+    function getitem(){
+        $id = $("#subcat").val();        
+
+        if($id != ""){
+            @* $(document).ajaxStart(function() {
+                    $('#isidetail').html('<p style="text-align:center; margin-top: 5%;"><img src="@Url.Content("~/images/loading.gif")"></p>');
+                }); *@
+            $("body").css("cursor", "progress");
+            document.getElementById("search").disabled = true;
+            
+            $url = "/PlgRequest/Supplier/AjaxGetItem?id=" + $id;
+            $.ajax({
+                url: $url,
+                type: "GET",
+                success: function(response){
+                    $("#isidetail").html(response);
+                    $("body").css("cursor", "default");
+                    document.getElementById("search").disabled = false;
+                }
+            });
+        } else{
+            swal({
+                title: 'Warning',
+                text: 'Please Choose Sub Category..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        }
+    }
+
+    function getitem2(){
+        $bln = $("#bln").val();
+        $thn = $("#thn").val();
+
+        $url = "/PlgRequest/Supplier/AjaxGetItem2?bln="+$bln+"&thn="+$thn;
+        $.ajax({
+            url: $url,
+            type: "GET",
+            success: function(response){
+                $("#isidetail").html(response);
+            }
+        });
+    }
+
+    function getmonmyprice(){
+        $month = $("#budgetMonth").val();
+        $year = $("#budgetYear").val();        
+
+        if($month != "" && $year != ""){
+            @* $(document).ajaxStart(function() {
+                    $('#isidetail').html('<p style="text-align:center; margin-top: 5%;"><img src="@Url.Content("~/images/loading.gif")"></p>');
+                }); *@
+            $("body").css("cursor", "progress");
+            document.getElementById("search").disabled = true;
+            
+            $url = "/PlgRequest/Supplier/AjaxGetMonMyPrice?month=" + $month + "&year=" + $year;
+            $.ajax({
+                url: $url,
+                type: "GET",
+                success: function(response){
+                    $("#isidetail").html(response);
+                    $("body").css("cursor", "default");
+                    document.getElementById("search").disabled = false;
+                }
+            });
+        } else{
+            swal({
+                title: 'Warning',
+                text: 'Please Choose Period..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        }
+    }
+    
+    //function saveprice(i){
+        //$pricei = "#price-" + i;
+        //$itemi = "#item-" + i;
+        //$validi = "#tanggal-" +i;
+        //$idi = "#id-" + i;
+        //$price = $($pricei).val();
+        //$item = $($itemi).val();
+        //$tgl = $($validi).val();
+        //$id = $($idi).val();
+        
+        //$url = "/PlgRequest/Supplier/AjaxSaveItem?item=" + $item + "&price=" + $price + "&tgl=" + $tgl + "&id=" + $id;
+        //$.ajax({
+            //url: $url,
+            //type: "GET",
+            //success: function(response){
+                //alert(response);
+            //}
+        //});
+    //}
+
+    function simpandata(){   
+        $valid = $("#valid").val().split(/\//).reverse().join('/');
+        @* $valid = (new Date($valid1)).toUTCString(); *@
+        $delivery = $("#delivery").val().split(/\//).reverse().join('/');
+        @* $delivery = (new Date($delivery1)).toUTCString(); *@
+        $item = $("#itemid").val();
+        $newitem = $("#newitemid").val();
+        $currency = $("#currency").val();
+        $factory = $("#factory").val();
+
+        $qnty = $("#iqnty").val();
+        $qnty3 = removeSeparator($qnty);
+
+        $qtyrt = $("#iqtyrt").val();
+        $qtyrt3 = removeSeparator($qtyrt);
+
+        $price = $("#price").val();
+        $price3 = removeSeparator($price);
+
+        $remark = $("#remark").val();
+        @* $id = $("#id").val();        *@
+
+        console.log("Price = " + $price3);
+
+        if($price3 == "0" || $price3 == ""){
+            swal({
+                title: 'Warning',
+                text: 'Please Input Price..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        } else if($valid == ""){
+            swal({
+                title: 'Warning',
+                text: 'Please Input Valid Until..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        } else if($delivery == ""){
+            swal({
+                title: 'Warning',
+                text: 'Please Input Delivery Date..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        } else {
+            document.getElementById("save").disabled = true;
+
+            $url = "/PlgRequest/Supplier/AjaxSaveItem";
+            $.ajax({
+                url: $url,
+                data: {
+                    item : $item,
+                    newitem : $newitem, 
+                    cur : $currency, 
+                    qnty : $qnty3, 
+                    qtyrt : $qtyrt3, 
+                    price : $price3, 
+                    valid : $valid, 
+                    deliv : $delivery, 
+                    remark : $remark,
+                    factory : $factory
+                },
+                type: "POST",
+                success: function(response){
+                    var msg = response.res.msg;
+                    if(msg == "Success To Save"){
+                        swal({
+                            title: 'Success',
+                            text: msg+'\n My Price : '+$currency+' '+$price,
+                            type: 'success'
+                        }, function(isConfirm){   
+                            if (isConfirm) {
+                                clearForm();
+                                $('#modal-lg').modal('hide');
+                                removeRow($item);
+                                @* getitem();   *@
+                            }
+                        });
+                        document.getElementById("save").disabled = false;
+                    }                    
+                    else{
+                        swal({
+                            title: 'Error',
+                            text: msg,
+                            type: 'error'
+                        }, function(isConfirm){   
+                            if (isConfirm) { 
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    function updatedata(){   
+        $valid = $("#valid").val().split(/\//).reverse().join('/');
+        $delivery = $("#delivery").val().split(/\//).reverse().join('/');
+        $currency = $("#currency").val();
+
+        $price = $("#price").val();
+        $price3 = removeSeparator($price);
+
+        $remark = $("#remark").val();
+        //$id = $("#id").val();  
+        $itemid = $("#itemid").val();
+        $newitemid = $("#newitemid").val();
+
+        console.log("Price = " + $price3);
+
+        if($price3 == "0" || $price3 == ""){
+            swal({
+                title: 'Warning',
+                text: 'Please Input Price..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        } else if($valid == ""){
+            swal({
+                title: 'Warning',
+                text: 'Please Input Valid Until..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        } else if($delivery == ""){
+            swal({
+                title: 'Warning',
+                text: 'Please Input Delivery Date..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        } else {
+            document.getElementById("save").disabled = true;
+
+            $url = "/PlgRequest/Supplier/AjaxUpdateItem";
+            $.ajax({
+                url: $url,
+                data: {
+                    //id : $id,
+                    cur : $currency,
+                    price : $price3, 
+                    valid : $valid, 
+                    deliv : $delivery, 
+                    remark : $remark,
+                    item : $itemid,
+                    newitem : $newitemid
+                },
+                type: "POST",
+                success: function(response){
+                    var msg = response.res.msg;
+                    if(msg == "Success To Save"){
+                        swal({
+                            title: 'Success',
+                            text: msg+'\n My Price : '+$currency+' '+$price,
+                            type: 'success'
+                        }, function(isConfirm){   
+                            if (isConfirm) {
+                                clearForm();
+                                $('#modal-lg').modal('hide');
+                                document.location.reload(true);
+                            }
+                        });
+                        document.getElementById("save").disabled = false;
+                    }                    
+                    else{
+                        swal({
+                            title: 'Error',
+                            text: msg,
+                            type: 'error'
+                        }, function(isConfirm){   
+                            if (isConfirm) { 
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    function simpandata5(){ 
+        var documentData = new FormData();
+
+        $valid = $("#valid").val().split(/\//).reverse().join('/');
+        $delivery = $("#delivery").val().split(/\//).reverse().join('/');
+        $item = $("#itemid").val();
+        $newitem = $("#newitemid").val();
+        $currency = $("#currency").val();
+        $factory = $("#factory").val();
+
+        $qnty = $("#iqnty").val();
+        $qnty3 = removeSeparator($qnty);
+
+        $qtyrt = $("#iqtyrt").val();
+        $qtyrt3 = removeSeparator($qtyrt);
+
+        $price = $("#price").val();
+        $price3 = removeSeparator($price);
+
+        $filename = "";
+        $namefile = $("#file").val();
+        if($namefile != ""){
+            $filename = $('input#file')[0].files[0].name;
+        }        
+        $changename = $("#changename").val();
+        $file = $("#file").prop("files")[0];
+
+        $remark = $("#remark").val();
+
+        console.log("Price = " + $price3);
+
+        if($price3 == "0" || $price3 == ""){
+            swal({
+                title: 'Warning',
+                text: 'Please Input Price..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        } else if($valid == ""){
+            swal({
+                title: 'Warning',
+                text: 'Please Input Valid Until..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        } else if($delivery == ""){
+            swal({
+                title: 'Warning',
+                text: 'Please Input Delivery Date..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        } else if($filename == ""){
+            swal({
+                title: 'Warning',
+                text: 'Please Input File..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        } else {
+            document.getElementById("save").disabled = true;
+            
+            documentData.append('item', $item);
+            documentData.append('newitem', $newitem);
+            documentData.append('cur', $currency);
+            documentData.append('qnty', $qnty3);
+            documentData.append('qtyrt', $qtyrt3);
+            documentData.append('price', $price3);
+            documentData.append('valid', $valid);
+            documentData.append('deliv', $delivery);
+            documentData.append('remark', $remark);
+            documentData.append('factory', $factory);
+            documentData.append('filename', $filename);
+            documentData.append('changename', $changename);
+            documentData.append('file', $file);
+
+            $url = "/PlgRequest/Supplier/AjaxSaveItem5";
+            $.ajax({
+                url: $url,
+                data: documentData,
+                type: "POST",
+                contentType: false,
+                processData: false,
+                success: function(response){
+                    var msg = response.msg;
+                    if(msg == "Success To Save"){
+                        swal({
+                            title: 'Success',
+                            text: msg+'\n My Price : '+$currency+' '+$price,
+                            type: 'success'
+                        }, function(isConfirm){   
+                            if (isConfirm) {
+                                clearForm();
+                                $('#modal-lg').modal('hide');
+                                document.location.reload(true);
+                            }
+                        });
+                        document.getElementById("save").disabled = false;
+                    }                    
+                    else{
+                        swal({
+                            title: 'Error',
+                            text: msg,
+                            type: 'error'
+                        }, function(isConfirm){   
+                            if (isConfirm) { 
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    function updatedata5(){
+        var documentData = new FormData();
+
+        $valid = $("#valid52").val().split(/\//).reverse().join('/');
+        $delivery = $("#delivery52").val().split(/\//).reverse().join('/');
+        $currency = $("#currency52").val();
+
+        $price = $("#price52").val();
+        $price3 = removeSeparator($price);
+
+        $remark = $("#remark52").val();
+        $itemid = $("#itemid52").val();
+        $newitemid = $("#newitemid52").val();
+
+        $filename = "";
+        $namefile = $("#file52").val();
+        if($namefile != ""){
+            $filename = $('input#file52')[0].files[0].name;
+        }        
+        $changename = $("#changename52").val();
+        $file = $("#file52").prop("files")[0];
+
+        console.log("Price = " + $price3);
+
+        if($price3 == "0" || $price3 == ""){
+            swal({
+                title: 'Warning',
+                text: 'Please Input Price..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        } else if($valid == ""){
+            swal({
+                title: 'Warning',
+                text: 'Please Input Valid Until..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        } else if($delivery == ""){
+            swal({
+                title: 'Warning',
+                text: 'Please Input Delivery Date..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        } else if($filename == ""){
+            swal({
+                title: 'Warning',
+                text: 'Please Input File..!',
+                type: 'warning'
+            }, function(isConfirm){   
+                if (isConfirm) { 
+                }
+            });
+        } else {
+            document.getElementById("save").disabled = true;
+
+            documentData.append('item', $itemid);
+            documentData.append('newitem', $newitemid);
+            documentData.append('cur', $currency);
+            documentData.append('price', $price3);
+            documentData.append('valid', $valid);
+            documentData.append('deliv', $delivery);
+            documentData.append('remark', $remark);
+            documentData.append('filename', $filename);
+            documentData.append('changename', $changename);
+            documentData.append('file', $file);
+
+            $url = "/PlgRequest/Supplier/AjaxUpdateItem5";
+            $.ajax({
+                url: $url,
+                data: documentData,
+                type: "POST",
+                contentType: false,
+                processData: false,
+                success: function(response){
+                    var msg = response.msg;
+                    if(msg == "Success To Save"){
+                        swal({
+                            title: 'Success',
+                            text: msg+'\n My Price : '+$currency+' '+$price,
+                            type: 'success'
+                        }, function(isConfirm){   
+                            if (isConfirm) {
+                                clearForm();
+                                $('#modal-lg').modal('hide');
+                                document.location.reload(true);
+                            }
+                        });
+                        document.getElementById("save").disabled = false;
+                    }                    
+                    else{
+                        swal({
+                            title: 'Error',
+                            text: msg,
+                            type: 'error'
+                        }, function(isConfirm){   
+                            if (isConfirm) { 
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    function clearForm(){
+        $('#item').val("");
+        $("#newitem").val("");
+        $('#factory').val("");
+        $('#iqnty').val("0.00");
+        $('#iqtyrt').val("0.00");
+        //$('#currency').val("");
+        $('#price').val("0.00");
+        $('#valid').val("");
+        $('#delivery').val("");
+        $('#remark').val("");
+    }
+
+    function removeRow(id){
+        $('#'+id).remove();
+    }
+
+    function isidetail(itemid, name, desc, uom, qnty, qtyrt, newitemid, factory){
+        @* var dt = name + " ( " + qty + " " + uom + ") "; *@
+
+        var iqnty = separatorNumeric(qnty);
+        var iqtyrt = separatorNumeric(qtyrt);
+        @* var iharga = separatorNumeric(harga); *@
+
+        $("#inform").html(name);
+        $("#idesc").html(desc);
+        $("#iuom").html(uom);
+        $("#uom").html(uom);
+        $("#itemid").val(itemid);
+        $("#iqnty").val(iqnty);
+        $("#iqtyrt").val(iqtyrt);
+        $("#newitemid").val(newitemid);
+        $("#factory").val(factory);
+
+        //
+        $('#price').val("0.00");
+        $('#valid').val("");
+        $('#delivery').val("");
+        $('#remark').val("");
+        @* $("#id").val(ids); *@        
+        @* $("#price").val(iharga); *@
+        @* $("#remark").val(remark); *@
+    }
+
+    function isidetail2(itemid, name, desc, uom, qnty, ids, harga, remark, newitemid){
+        @* var dt = name + " ( " + qty + " " + uom + ") "; *@
+
+        var iqnty = separatorNumeric(qnty);
+        var iharga = separatorNumeric(harga);
+
+        $("#inform").html(name);
+        $("#idesc").html(desc);
+        $("#iuom").html(uom);
+        $("#uom").html(uom);
+        $("#itemid").val(itemid);
+        $("#newitemid").val(newitemid);
+        $("#iqnty").val(iqnty);
+        $("#id").val(ids);        
+        $("#price").val(iharga);
+        $("#remark").val(remark);
+    }
+
+    function isidetail52(itemid, name, desc, uom, qnty, ids, harga, remark, newitemid, factory){
+        @* var dt = name + " ( " + qty + " " + uom + ") "; *@
+
+        var iqnty = separatorNumeric(qnty);
+        var iharga = separatorNumeric(harga);
+
+        $("#inform52").html(name);
+        $("#idesc52").html(desc);
+        $("#iuom52").html(uom);
+        $("#uom52").html(uom);
+        $("#itemid52").val(itemid);
+        $("#newitemid52").val(newitemid);
+        $("#iqnty52").val(iqnty);
+        $("#id52").val(ids);        
+        $("#price52").val(iharga);
+        $("#remark52").val(remark);
+        $("#factory52").val(factory);
+    }
+
+    function separatorNumeric(num){
+        //var num1 = num.replace(".", ",");
+        var num2 = parseFloat(num);
+        var num3 = num2.toFixed(2);
+        //var num4 = num3.replace(",", ".");
+
+        var	number_string = num3.toString(),
+            split	= number_string.split('.'),
+            sisa 	= split[0].length % 3,
+            rupiah 	= split[0].substr(0, sisa),
+            ribuan 	= split[0].substr(sisa).match(/\d{1,3}/gi);
+                
+        if (ribuan) {
+            separator = sisa ? ',' : '';
+            rupiah += separator + ribuan.join(',');
+        }
+        rupiah = split[1] != undefined ? rupiah + '.' + split[1] : rupiah;
+
+        if (rupiah.substring(rupiah.length - 3) == ".00"){
+            rupiah = rupiah.replace(".00", "");
+        }
+
+        return rupiah;
+    }
+
+    function removeSeparator(num){
+        $num1 = num.replace(/\,/g, "");
+        $num2 = $num1.replace(".00", "");
+
+        return $num2;
+    }
+</script>
+
+<Script>
+    function pagesMyProductItem(pages){
+        $itemName = "";
+          
+        $("body").css("cursor", "progress");
+        
+        $url = "/PlgRequest/Supplier/AjaxGetPagesMyProductItem?pages=" + pages;
+        $.ajax({
+            url: $url,
+            type: "GET",
+            success: function(response){
+                $("#isidetail").html(response);
+                $("body").css("cursor", "default");
+            }
+        });
+    }
+</Script>
+
+<script type="text/javascript">
+    $(function () {
+        $('.select2-ctg').select2({
+            allowClear : true,
+            placeholder: 'Choose Sub Category...'
+        });
+
+        $('.select2-bln').select2({
+            allowClear : true,
+            placeholder: 'Choose Month...'
+        });
+
+        $('.select2-thn').select2({
+            allowClear : true,
+            placeholder: 'Choose Year...'
+        });
+    })
+
+    function only_numeric(evt) {
+	  	var charCode = (evt.which) ? evt.which : event.keyCode
+	   	if ((charCode > 31 || charCode < 44) && (charCode > 44) && (charCode < 48 || charCode > 57))
+	    	return false;
+	  	return true;
+	}
+</script>
+

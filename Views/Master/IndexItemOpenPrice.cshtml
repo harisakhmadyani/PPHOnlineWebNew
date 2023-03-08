@@ -1,0 +1,95 @@
+@using Microsoft.AspNetCore.Http;
+@{
+    var factAbbr = Context.Session.GetString("_FAbbrs");
+}
+
+@model RoleDateTime
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+    <div class="row mb-2">
+        <div class="col-sm-6">
+        <h1 class="m-0 text-dark"> Master <small>Items Open Price (@factAbbr)</small></h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Master</a></li>
+            @* <li class="breadcrumb-item"><a href="#">Input Price</a></li> *@
+            <li class="breadcrumb-item active">Items Open Price</li>
+        </ol>
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                    <h3 class="card-title brand-text font-weight-light">
+                        <i class="fas fa-cogs mr-1"></i>
+                        <b>Refresh</b> Items Open Price
+                    </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="form-group row">                                
+                                <button type="button" class="btn bg-gradient-primary" onclick="refreshItemOpenPrice()"><i class="fa fa-sync mr-1"></i></i>Refresh Items Open Price</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.container-fluid -->
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-default card-outline">
+                <div class="card-header">
+                    <h3 class="card-title brand-text font-weight-light">
+                        <i class="fas fa-table mr-1"></i>
+                            <b>List</b> Items Open Price
+                    </h3>
+                </div>
+                <div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label"><h3 class="card-title brand-text font-weight-light"><b>Sub Category</b></h3></label>
+                                <div class="col-8">
+                                    <select class="form-control select2-ctg" style="width: 100%;" id="subcat">
+                                        <option value=""></option>
+                                        @if(ViewBag.SubCat.data != null){
+                                            @foreach (var item in ViewBag.SubCat.data)
+                                            {
+                                                <option value="@item.SubCategoryID">@item.SubCategoryName</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-block bg-gradient-primary" id="search" onclick="getitemopenprice()"><i class="fa fa-search mr-1"></i>Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div>
+                    <div class="card-body" id="isidetail">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<partial name="_js.cshtml">
+@* <partial name="_modal.cshtml"> *@

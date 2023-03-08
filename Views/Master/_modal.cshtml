@@ -1,0 +1,68 @@
+<div class="modal fade" id="modal-xl">
+    <div class="modal-dialog modal-xl">
+        <form id="my_form">
+            <div class="modal-content">
+                <div class="modal-header bg-gradient-primary">
+                    <h5 class="modal-title brand-text font-weight-light"><i class="far fa-check-circle mr-1"></i><b>Choose</b> My Item</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label"><h3 class="card-title brand-text font-weight-light"><b>Sub Category</b></h3></label>
+                            <div class="col-8">
+                                <select class="form-control select2-ctg" style="width: 100%;" id="subcat">
+                                    <option value=""></option>
+                                    @if(ViewBag.SubCat.data != null){
+                                        @foreach (var item in ViewBag.SubCat.data)
+                                        {
+                                            <option value="@item.SubCategoryID">@item.SubCategoryName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-block bg-gradient-primary" id="search" onclick="getitem()"> <i class="fa fa-search mr-1"></i>Search</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    <div id="itemSupplier">
+                        <div class="col-md-12">
+                            <div class="table-responsive" style="height: 500px;">
+                                <table class="table table-hover dtr-inline table-head-fixed" id="datatables2">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 25%;"><h3 class="card-title brand-text font-weight-light"><b>Item Name</b></h3></th>
+                                            <th style="width: 25%;"><h3 class="card-title brand-text font-weight-light"><b>Item Description</b></h3></th>
+                                            <th style="width: 2%;"><h3 class="card-title brand-text font-weight-light"><b>Action</b></h3></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                @* <div class="modal-footer justify-content-between mr-1 ml-1">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times mr-1"></i>Close</button>
+                    <button type="button" id="save" class="btn bg-gradient-primary" onclick="updatedata()"><i class="fas fa-save mr-1"></i>Save</button>
+                </div> *@
+            </div>
+        </form>
+    </div> 
+</div>
+
+<!-- ================================================ modul supplier ================================================== -->
+<script type="text/javascript">
+    $(function () {
+        $('#datatables2').DataTable({
+            "paging": false
+        });
+    })
+</script>

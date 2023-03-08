@@ -1,0 +1,151 @@
+@{
+    Layout = null;
+}
+<style type="text/css">
+#box_login{
+    border-radius: 5px;
+}
+
+#bg_image{
+    background-image:  url('@Url.Content("~/images/bg_image12.jpg")');
+    /*width: 100%;*/
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /*background-size: 100% 100%;*/
+}
+</style>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Sambu Purchasing | Log in</title>
+<!-- Tell the browser to be responsive to screen width -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+<!-- Ionicons -->
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<!-- icheck bootstrap -->
+<link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+<!-- Sweetalert-->
+<link rel="stylesheet" href="~/plugins/sweetalert/sweetalert.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="~/dist/css/adminlte.css">
+<!-- Google Font: Source Sans Pro -->
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+<!-- jQuery -->
+<script src="~/plugins/jquery/jquery.min.js"></script>
+
+</head>
+<body class="hold-transition login-page" id="bg_image">
+<div class="login-box">
+
+<!-- /.login-logo -->
+<div class="card">
+    <div class="card-body login-card-body" id="box_login">
+    <div class="login-logo">
+        <img src="~/images/Logo_PS.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-2"
+             style="opacity: .8">
+        <a href="login.html"></i><b>Sambu</b> Purchasing</a>
+    </div>
+    <hr>
+    <p class="login-box-msg brand-text">Sign in to start your session</p>
+
+    @* <form method="post" asp-controller="Login" asp-action="CekLogin"> *@
+        <div class="input-group mb-3">
+        <input type="text" class="form-control brand-text font-weight-light" id="userId" name="userId" placeholder="Username">
+        <div class="input-group-append">
+            <div class="input-group-text">
+            <span class="fas fa-user-alt"></span>
+            </div>
+        </div>
+        </div>
+        <div class="input-group mb-3">
+        <input type="password" class="form-control brand-text font-weight-light" id="password" name="password" placeholder="Password">
+        <div class="input-group-append">
+            <div class="input-group-text">
+            <span class="fas fa-lock"></span>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-8">
+            @* <div class="icheck-primary">
+            <input type="checkbox" id="remember">
+            <label class="brand-text font-weight-light" for="remember">
+                Remember Me
+            </label>
+            </div> *@
+        </div>
+        <!-- /.col -->
+        <div class="col-4">
+            <button type="button" class="btn btn-block bg-gradient-primary btn-sm brand-text" onclick="Login()">Login<i class="fas fa-sign-in-alt ml-1"></i></button>
+        </div>
+        <!-- /.col -->          
+        </div>
+        <div class="lockscreen-footer text-center mb-3">
+            Copyright &copy; 2020 - @DateTime.Now.Year <b><a href="#" class="text-black">Sambu Purchasing</a></b><br>
+            Set Price To Easily
+        </div>
+    @* </form>      *@
+    </div>
+    <!-- /.login-card-body -->
+</div>
+</div>
+<!-- /.login-box -->
+
+<!-- Bootstrap 4 -->
+<script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Sweetalert-->
+<script src="~/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- AdminLTE App -->
+@* <script src="~/dist/js/adminlte.min.js"></script> *@
+
+<script>
+    $(document).ready(function() {
+        $("#password").on('keypress',function(e) {
+            if(e.which == 13) {
+                Login();
+            }
+        });
+    });
+</script>
+
+<script>
+    function Login(){
+        $userId = $("#userId").val();
+        $password = $("#password").val();
+
+        $url = "/PlgRequest/Login/CekLogin";
+        $.ajax({
+            url: $url,
+            data: {
+                userId : $userId,
+                password : $password
+            },
+            type: "POST",
+            success: function(response){
+                if(response.msg == "ok"){
+                    window.location.href = "/PlgRequest/Home/Index";
+                }else{
+                    swal({
+                        title: 'Error',
+                        text: 'Please check your username and password !',
+                        type: 'error'
+                    }, function(isConfirm){   
+                        if (isConfirm) {
+                            console.log('Please username and password !');
+                        }
+                    });
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

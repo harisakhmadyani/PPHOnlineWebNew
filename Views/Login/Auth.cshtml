@@ -1,0 +1,179 @@
+@{ Layout = null; }
+
+@using Microsoft.AspNetCore.Http;
+@{
+    var username = Context.Session.GetString("_UserNames");
+}
+
+<style type="text/css">
+#box_login{
+    border-radius: 5px;
+    /*background: #E9ECEF;*/
+}
+
+#bg_image{
+    background-image: url('@Url.Content("~/images/bg_image12.jpg")');
+/* width: 100%;
+    height: auto;*/
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /*background-size: 100% 100%;*/
+}
+
+#ls_content{
+    margin-top: 0%;
+    -ms-flex-align: center;
+    align-items: center;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    height: 100vh;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+#otp_code{
+    margin-left: 70px;
+    width: 75%;
+}
+
+#otp_code_btn{
+    background-color: #ffffff;
+    border: 0;
+    padding: 0 0px;
+}
+
+#image_user{
+    /*background: #E9ECEF;*/
+}
+
+#btn_resend_otp{
+    margin-left: 70px;
+    width: 40%;
+}
+</style>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>PPH Online | OTP Verification</title>
+<!-- Tell the browser to be responsive to screen width -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+<!-- Ionicons -->
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<!-- Sweetalert-->
+<link rel="stylesheet" href="~/plugins/sweetalert/sweetalert.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="~/dist/css/adminlte.css">
+<!-- Google Font: Source Sans Pro -->
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+<!-- jQuery -->
+<script src="~/plugins/jquery/jquery.min.js"></script>
+
+</head>
+<body class="hold-transition lockscreen" id="bg_image">
+<!-- Automatic element centering -->
+<div class="lockscreen-wrapper" id="ls_content">
+    <div class="card">
+        <div class="card-body login-card-body" id="box_login">
+        <div class="login-logo">
+            <img src="~/images/Logo_PS.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-2"
+                style="opacity: .8">
+            <a href="login.html"></i><b>PPH</b> Online</a>
+        </div>
+        <hr>
+        <p class="login-box-msg brand-text">Enter your OTP code to retrieve your session</p>
+
+        <!-- User name -->
+        <div class="lockscreen-name brand-text font-weight-light">@username</div>
+
+        <!-- START LOCK SCREEN ITEM -->
+        <div class="lockscreen-item">
+            <!-- lockscreen image -->
+            <div class="lockscreen-image" id="image_user">
+            <img src="~/dist/img/default_user.png" alt="User Image">
+            </div>
+            <!-- /.lockscreen-image -->
+
+            <!-- lockscreen credentials (contains the form) -->
+            <div class="input-group mb-3" id="otp_code">
+                <input type="text" class="form-control brand-text font-weight-light" name="G2FA" id="G2FA" placeholder="OTP Code">
+                <div class="input-group-append">
+                <div class="input-group-text">
+                    <button type="submit" id="otp_code_btn"><i class="fas fa-arrow-right text-muted" onclick="Confirm2FA()"></i></button>
+                </div>
+                </div>
+            </div>
+
+
+            @* <div id="btn_resend_otp">
+                <button type="button" class="btn btn-block bg-gradient-primary btn-sm brand-text"  onclick="resendotp()">Resent OTP<i class="fas fa-paper-plane ml-1"></i></button>
+            </div> *@
+            <!-- /.lockscreen credentials -->
+        </div>
+        <div class="text-center">
+            <a href="/PlgRequest/Login">Or sign in as a different user</a>
+        </div>
+        <div class="lockscreen-footer text-center mb-3">
+            Copyright &copy; 2020 - @DateTime.Now.Year <b><a href="#" class="text-black">PPH Online</a></b><br>
+            Set Price To Easily
+        </div>
+        </div>
+        <!-- /.login-card-body -->    
+    </div>
+    <!-- /.lockscreen-item -->  
+</div>
+<!-- /.center -->
+
+<!-- Bootstrap 4 -->
+<script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Sweetalert-->
+<script src="~/plugins/sweetalert/sweetalert.min.js"></script>
+
+
+<script>
+    function Confirm2FA(){
+        $id = $("#G2FA").val();
+        $url = "Check2FA?input=" + $id;
+
+        $.ajax({
+            url: $url,
+            type: "GET",
+            success: function(response){
+                if(response.msg == "ok"){
+                        window.location.href = "/PlgRequest/Home/Index";
+                }else{
+                    swal({
+                        title: 'Error',
+                        text: 'Please check your OTP !',
+                        type: 'error'
+                    }, function(isConfirm){   
+                        if (isConfirm) {
+                            console.log('Please check your OTP !');
+                        }
+                    });
+                }
+            }
+        });
+
+    }
+
+    function resendotp(){
+        alert('Comming Soon');
+    }
+
+    $("#G2FA").keypress(function(event) {
+        if (event.keyCode === 13) {
+            Confirm2FA();
+        }
+    });
+</script>
+</body>
+</html>

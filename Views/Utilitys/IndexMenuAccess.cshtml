@@ -1,0 +1,126 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+    <div class="row mb-2">
+        <div class="col-sm-6">
+        <h1 class="m-0 text-dark"> Utility <small>Menu Access</small></h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Utility</a></li>
+            @* <li class="breadcrumb-item"><a href="#">Input Price</a></li> *@
+            <li class="breadcrumb-item active">Menu Access</li>
+        </ol>
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title brand-text font-weight-light">
+                            <i class="fas fa-table mr-1"></i>
+                                <b>List</b> Menu Access 
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="table-responsive" style="height: 500px;">
+                                    <table class="table table-hover dtr-inline table-head-fixed" id="datatables">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 35%;"><h3 class="card-title brand-text font-weight-light"><b>Menu</b></h3></th>
+                                                <th style="width: 65%;"><h3 class="card-title brand-text font-weight-light"><b>#</b></h3></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                if(ViewBag.MenuHdr != null){
+                                                    foreach(var item in ViewBag.MenuHdr){
+                                                        if(item.sub){
+                                                            var check = "";
+                                                            foreach(var mnHdr in ViewBag.MenuHdrAccess){
+                                                                if(item.id == mnHdr.id){
+                                                                    check = "checked";
+                                                                }
+                                                            }
+                                                            <tr>                                            
+                                                                <td><span>@item.name</span></td>                                               
+                                                                <td>
+                                                                    <div class="icheck-success d-inline">
+                                                                        <input type="checkbox" name="menu" id="@item.id" value="@item.id" @check>
+                                                                        <label for="@item.id"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            if(ViewBag.MenuDtl != null){
+                                                                foreach(var items in ViewBag.MenuDtl){
+                                                                    var check2 = "";
+                                                                    foreach(var mnHdr in ViewBag.MenuHdrAccess){
+                                                                        if(item.id == mnHdr.id){
+                                                                            check2 = "checked";
+                                                                        }
+                                                                    }
+                                                                    if(items.hdrid == item.id){ 
+                                                                        <tr> 
+                                                                            <td><span class="ml-5">@items.name</span></td>                                                  
+                                                                            <td>
+                                                                                <div class="icheck-success d-inline">
+                                                                                    <input type="checkbox" name="menu" id="@items.id" value="@items.id" @check2>
+                                                                                    <label for="@items.id"></label>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                            }
+                                                        } else{
+                                                            var check = "";
+                                                            foreach(var mnHdr in ViewBag.MenuHdrAccess){
+                                                                if(item.id == mnHdr.id){
+                                                                    check = "checked";
+                                                                }
+                                                            }
+                                                            <tr>                                            
+                                                                <td><span>@item.name</span></td>                                                
+                                                                <td>
+                                                                    <div class="icheck-success d-inline">
+                                                                        <input type="checkbox" name="menu" id="@item.id" value="@item.id" @check>
+                                                                        <label for="@item.id"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <hr>
+                                <button type="button" id="save" class="btn bg-gradient-primary" onclick="saveMenuAccess()"><i class="fas fa-save mr-1"></i>Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>  
+
+
+<!-- ================================================ modul supplier ================================================== -->
+@* <script type="text/javascript">
+    $(function () {
+        $('#datatables').DataTable({
+            "paging": false
+        });
+    })
+</script> *@
+
+<partial name="_js.cshtml">

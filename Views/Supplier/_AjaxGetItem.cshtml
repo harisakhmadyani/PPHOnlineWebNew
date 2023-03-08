@@ -1,0 +1,112 @@
+@model ItemRequest
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-default card-outline">
+                <div class="card-header">
+                    <h3 class="card-title brand-text font-weight-light">
+                        <i class="fas fa-table mr-1"></i>
+                            <b>List</b> Item 
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="col-md-12">
+                        <div class="table-responsive" style="height: 500px;">
+                            <table class="table table-hover dtr-inline table-head-fixed" id="datatables">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 35%;"><h3 class="card-title brand-text font-weight-light"><b>Item</b></h3></th>
+                                        <th style="width: 5%;"><h3 class="card-title brand-text font-weight-light"><b>Factory</b></h3></th>
+                                        <th style="width: 5%;"><h3 class="card-title brand-text font-weight-light"><b>UOM</b></h3></th>
+                                        <th style="width: 5%;"><h3 class="card-title brand-text font-weight-light"><b>Qty</b></h3></th>
+                                        <th style="width: 7%;"><h3 class="card-title brand-text font-weight-light"><b>Usage / Year</b></h3></th>
+                                        <th style="width: 2%;"><h3 class="card-title brand-text font-weight-light"><b>Images</b></h3></th>
+                                        @* <th style="width: 10%;"><h3 class="card-title brand-text font-weight-light"><b>My Price</b></h3></th> *@
+                                        @* <th style="width: 10%;"><h3 class="card-title brand-text font-weight-light"><b>Valid Until</b></h3></th> *@
+                                        @* <th style="width: 20%;"><h3 class="card-title brand-text font-weight-light"><b>Remark</b></h3></th> *@
+                                        <th style="width: 5%;"><h3 class="card-title brand-text font-weight-light"><b>Action</b></h3></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if(Model.data != null){
+                                        int a = 0; 
+                                        @foreach (var item in Model.data)
+                                        {
+                                            @* var qty = item.Qnty.ToString("#,##0.000");
+                                            var qtyrt = item.QtyRt.ToString("#,##0.000");
+                                            var harga = item.Harga.ToString("#,##0.000"); *@
+
+                                            var qnty2 = item.Qnty.ToString();
+                                            var qtyrt2 = item.QtyRt.ToString();
+                                            @* var harga = item.Harga.ToString(); *@
+
+                                            @* var qnty2 = qnty.Replace(".", ",");
+                                            var qtyrt2 = qtyrt.Replace(".", ","); *@
+                                            @* var harga2 = harga.Replace(".", ","); *@
+
+                                            @* var res_hrg = harga.Split(',').Last() != "000"  *@
+                                            var image = item.ItemID+".jpg";
+                                            <tr id='@item.ItemID'>                                            
+                                                <td>
+                                                    @item.ItemName<br>
+                                                    @item.ItemDesc
+                                                </td>
+                                                <td>@item.Factory</td>
+                                                <td>@item.UOMName</td>
+
+                                                @if (qnty2.Substring(qnty2.Length - 3) == ".00"){
+                                                    <td style="text-align: right;" class="autonum_nondecimal">@qnty2</td>
+                                                } else{
+                                                    <td style="text-align: right;" class="autonum_price">@qnty2</td>
+                                                }
+
+                                                @if (qtyrt2.Substring(qtyrt2.Length - 2) == ".0"){
+                                                    <td style="text-align: right;" class="autonum_nondecimal">@qtyrt2</td>
+                                                } else{
+                                                    <td style="text-align: right;" class="autonum_price">@qtyrt2</td>
+                                                }
+
+                                                <td style="text-align: center;"><a href="~/ItemImage/@image" data-toggle="lightbox" class="btn btn-success btn-icon btn-circle btn-sm"><i class="fa fa-eye"></i></a></td>
+                                                @* <td style="text-align: right;" class="autonum_price">@harga2</td> *@
+                                                @* <td style="text-align: center;">@if(@item.ValidUntil != null) {@item.ValidUntil.Value.ToString("dd-MM-yyyy")}</td> *@
+                                                @* <td>@item.Remark</td>*@
+                                                <td style="text-align: center;">
+                                                    @* @if(item.ImportBy is null){ *@
+                                                        <button type="button" class="btn bg-gradient-primary btn-sm" data-toggle="modal" data-target="#modal-lg" onclick="isidetail('@item.ItemID', '@item.ItemName', '@item.ItemDesc', '@item.UOMName' ,'@qnty2', '@qtyrt2', '@item.NewItemID', '@item.Factory')"><i class="fas fa-usd mr-1"></i>Add Price</button>
+                                                    @* } *@
+                                                </td>
+                                            </tr>  
+                                            a++;   
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  
+
+
+<!-- ================================================ modul supplier ================================================== -->
+<script type="text/javascript">
+    $(function () {
+        $('#datatables').DataTable({
+            "paging": false
+        });
+
+        $('.autonum_price').autoNumeric('init', {
+            mDec: 2,
+            aDec: '.',
+            aSep: ','
+        });
+
+        $('.autonum_nondecimal').autoNumeric('init', {
+            mDec: 0,
+            aDec: '.',
+            aSep: ','
+        });
+    })
+</script>

@@ -1,0 +1,208 @@
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using System.Net.Http.Headers;
+using PlgRequest.Utility;
+using System.IO;
+
+namespace PlgRequest.CoreApiClient
+{
+     public partial class ApiClient2
+    {
+        private readonly HttpClient _httpClient;
+     
+        private Uri BaseEndpoint { get; set; }
+        public ApiClient()
+        {
+            _httpClient = new HttpClient();
+        }
+    
+        public async Task<IEnumerable<T>> GetAsync2<T>(Uri requestUrl, string token){
+            // addHeaders();
+            try{
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var response = await _httpClient.GetAsync(requestUrl, HttpCompletionOption.ResponseHeadersRead);
+                response.EnsureSuccessStatusCode();
+                var data = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<IEnumerable<T>>(data);
+            }catch(System.Exception ex){
+                var err = ex.Message.ToString();
+                throw;
+            }
+        }
+
+        
+
+        // public async Task PostImage(Uri requestUrl, [FromForm] DocFile conten){
+        //     try
+        //     {
+        //         var response = await _httpClient.PostAsync(requestUrl, conten);
+        //         response.EnsureSuccessStatusCode();
+        //         var data = await response.Content.ReadAsStringAsync();
+        //         return JsonConvert.DeserializeObject(data);
+        //     }
+        //     catch
+        //     {
+                
+        //         throw;
+        //     }
+        // }
+
+        public async Task<T1> Post2Model<T1, T2>(Uri requestUrl, T2 content, string token)
+        {
+            try
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                HttpResponseMessage response = await _httpClient.PostAsync(requestUrl.ToString(), CreateHttpContent<T2>(content));
+                response.EnsureSuccessStatusCode();
+                var data = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<T1>(data);
+            }
+            catch (System.Exception)
+            {
+                return default(T1);
+            }
+
+        }
+
+        public async Task<T1> PostAsync2<T1, T2>(Uri requestUrl, T2 content)
+        {
+            try{
+                addHeaders();
+                var response = await _httpClient.PostAsync(requestUrl.ToString(), CreateHttpContent<T2>(content));
+                response.EnsureSuccessStatusCode();
+                var data = await response.Content.ReadAsStringAsync();
+                // var data2 = "{\"token\":\"unautorizhed\", \"msg\":\" " + msg + "\"}";
+                return JsonConvert.DeserializeObject<T1>(data);
+            }catch(System.Exception e){
+                var msg = e.Message;
+                var data = "{\"token\":\"unautorizhed\", \"msg\":\" " + msg + "\"}";
+                return JsonConvert.DeserializeObject<T1>(data);
+            }
+            
+        }
+
+        public async Task PostAsync1<T>(Uri requestUrl, T content, string _token)
+        {
+            try{
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+                var response = await _httpClient.PostAsync(requestUrl.ToString(), CreateHttpContent<T>(content));
+                response.EnsureSuccessStatusCode();
+                var data = await response.Content.ReadAsStringAsync();
+                return;
+            }catch(System.Exception){
+                // var data = "{\"token\":\"unautorizhed\"";
+                // return JsonConvert.DeserializeObject<T1>(data);
+                throw;
+            }
+        }
+
+        public async Task<T> PostAsync2<T>(Uri requestUrl, T content, string _token)
+        {
+            try{
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+                var response = await _httpClient.PostAsync(requestUrl.ToString(), CreateHttpContent<T>(content));
+                response.EnsureSuccessStatusCode();
+                var data = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<T>(data);
+            }catch(System.Exception){
+                // var data = "{\"token\":\"unautorizhed\"";
+                // return JsonConvert.DeserializeObject<T1>(data);
+                throw;
+            }
+        }
+
+        public async Task<T> GetAsync<T>(Uri requestUrl, string token){
+            // addHeaders();
+            try{
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var response = await _httpClient.GetAsync(requestUrl, HttpCompletionOption.ResponseHeadersRead);
+                response.EnsureSuccessStatusCode();
+                var data = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<T>(data);
+            }catch(System.Exception ex){
+                var err = ex.Message.ToString();
+                throw;
+            }
+            
+        }
+
+        public async Task<T> PostAsync<T>(Uri requestUrl, T content)
+        {
+            addHeaders();
+            var response = await _httpClient.PostAsync(requestUrl.ToString(), CreateHttpContent<T>(content));
+            response.EnsureSuccessStatusCode();
+            var data = await response.Content.ReadAsStringAsync();
+            var hasil = JsonConvert.DeserializeObject<T>(data);
+            return hasil;
+        }
+        
+
+        
+
+        public Uri CreateRequestUri(string relativePath, string queryString = "")
+        {
+            Uri baseEndPoint = new Uri(ApplicationSettings.webApiUrl);
+            if(baseEndPoint == null)
+                throw new ArgumentNullException("baseEndPoint");
+
+            BaseEndpoint = baseEndPoint;
+            
+            var endpoint = new Uri(BaseEndpoint, relativePath);
+            var uriBuilder = new UriBuilder(endpoint);
+            uriBuilder.Query = queryString;
+            return uriBuilder.Uri;
+        }
+
+        public HttpContent CreateHttpContent<T>(T content)
+        {
+            var json = JsonConvert.SerializeObject(content, MicrosoftDateFormatSettings);
+            return new StringContent(json, Encoding.UTF8, "application/json");
+        }
+
+        public static JsonSerializerSettings MicrosoftDateFormatSettings
+        {
+            get
+            {
+                return new JsonSerializerSettings
+                {
+                    DateFormatHandling = DateFormatHandling.MicrosoftDateFormat
+                };
+            }
+        }
+
+        private void addHeaders(){
+             _httpClient.DefaultRequestHeaders.Remove("userIP");
+            _httpClient.DefaultRequestHeaders.Add("userIP", "192.168.1.1");
+        }
+
+        public string GetContentType(string path)
+        {
+            var types = GetMimeTypes();
+            var ext = Path.GetExtension(path).ToLowerInvariant();
+            return types[ext];
+        }
+ 
+        public Dictionary<string, string> GetMimeTypes()
+        {
+            return new Dictionary<string, string>
+            {
+                {".txt", "text/plain"},
+                {".pdf", "application/pdf"},
+                {".doc", "application/vnd.ms-word"},
+                {".docx", "application/vnd.ms-word"},
+                {".xls", "application/vnd.ms-excel"},
+                {".xlsx", "application/vnd.openxmlformatsofficedocument.spreadsheetml.sheet"},
+                {".png", "image/png"},
+                {".jpg", "image/jpeg"},
+                {".jpeg", "image/jpeg"},
+                {".gif", "image/gif"},
+                {".csv", "text/csv"}
+            };
+        }       
+    }
+
+}

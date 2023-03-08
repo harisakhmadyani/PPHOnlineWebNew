@@ -1,0 +1,122 @@
+@model ItemRequest
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-default card-outline">
+                <div class="card-header">
+                    <h3 class="card-title brand-text font-weight-light">
+                        <i class="fas fa-table mr-1"></i>
+                            <b>List</b> Item 
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="col-md-12">
+                        <div class="table-responsive" style="height: 500px;">
+                            <table class="table table-hover dtr-inline table-head-fixed" id="datatables">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 15%;"><h3 class="card-title brand-text font-weight-light"><b>Item</b></h3></th>
+                                        <th style="width: 3%;"><h3 class="card-title brand-text font-weight-light"><b>UOM</b></h3></th>
+                                        <th style="width: 3%;"><h3 class="card-title brand-text font-weight-light"><b>Qty</b></h3></th>
+                                        <th style="width: 10%;"><h3 class="card-title brand-text font-weight-light"><b>Supplier</b></h3></th>
+                                        <th style="width: 5%;"><h3 class="card-title brand-text font-weight-light"><b>Currency</b></h3></th>
+                                        <th style="width: 10%;"><h3 class="card-title brand-text font-weight-light"><b>Price / UOM</b></h3></th>                                        
+                                        <th style="width: 10%;"><h3 class="card-title brand-text font-weight-light"><b>Valid Until</b></h3></th>
+                                        <th style="width: 10%;"><h3 class="card-title brand-text font-weight-light"><b>Delivery Date</b></h3></th>
+                                        <th style="width: 10%;"><h3 class="card-title brand-text font-weight-light"><b>Remark</b></h3></th>
+                                        <th style="width: 2%;"><h3 class="card-title brand-text font-weight-light"><b>Images</b></h3></th>
+                                        <th style="width: 10%;"><h3 class="card-title brand-text font-weight-light"><b>Action</b></h3></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if(Model.data != null){
+                                        int a = 0; 
+                                        @foreach (var item in Model.data)
+                                        {
+                                            var qty2 = item.Qnty.ToString();
+                                            var harga2 = item.Harga.ToString();
+
+                                            @* var qty2 = qty.Replace(".", ",");
+                                            var harga2 = harga.Replace(".", ","); *@
+                                            var image = item.ItemID+".jpg";
+                                            <tr id="@item.IDInput">
+                                                <td>
+                                                    @item.ItemName<br>
+                                                    @item.ItemDesc
+                                                </td>
+                                                <td>@item.UOMName</td>
+
+                                                @if (qty2.Substring(qty2.Length - 3) == ".00"){
+                                                        <td style="text-align: right;" class="autonum_nondecimal">@qty2</td>
+                                                } else{
+                                                    <td style="text-align: right;" class="autonum_price">@qty2</td>
+                                                }
+
+                                                <td>@item.SupplierName</td>
+                                                <td style="text-align: center;">@item.Currency</td>
+
+                                                @if (harga2.Substring(harga2.Length - 3) == ".00"){
+                                                        <td style="text-align: right;" class="autonum_nondecimal">@harga2</td>
+                                                } else{
+                                                        <td style="text-align: right;" class="autonum_price">@harga2</td>
+                                                }
+
+                                                <td style="text-align: center;">@if(@item.ValidUntil != null) {@item.ValidUntil.Value.ToString("dd-MM-yyyy")}</td>
+                                                <td style="text-align: center;">@if(@item.DeliveryDate != null) {@item.DeliveryDate.Value.ToString("dd-MM-yyyy")}</td>
+                                                <td>@item.Remark</td>
+                                                <td style="text-align: center;"><a href="~/ItemImage/@image" data-toggle="lightbox" class="btn btn-success btn-icon btn-circle btn-sm"><i class="fa fa-eye"></i></a></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" class="btn bg-gradient-primary btn-sm" id="import" onclick="PriceToPPH('@item.IDInput', '@item.ItemID', '@item.SupplierID', '@item.Periode')"><i class="fas fa-share mr-1"></i>Import To PPH</button>
+                                                </td>
+                                                @* <td style="text-align: right;">@item.Qnty.ToString("#,##0.00")</td>
+                                                <td style="text-align: right;">@item.QtyRt.ToString("#,##0.00")</td>
+                                                <td style="text-align: right;">
+                                                    @item.Harga.ToString("#,##0.00") <br>
+                                                    (@if(@item.ValidUntil != null) {@item.ValidUntil.Value.ToString("dd-MM-yyyy")})
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="price[]" id="price-@a" class="form-control txt" value="0" style="text-align: right;">
+                                                    <input type="hidden" name="item[]" id="item-@a" value="@item.ItemID">
+                                                    <input type="hidden" name="id[]" id="id-@a" value="@item.IDInput">
+                                                </td>
+                                                <td>
+                                                    <input type="date" name="tanggal[]" id="tanggal-@a" class="form-control txt" value="">
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-block btn-outline-primary" onclick="saveprice(@a)">Save</button>
+                                                </td> *@
+                                            </tr>  
+                                            a++;   
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  
+
+
+<!-- ================================================ modul purchaser ================================================== -->
+<script type="text/javascript">
+    $(function () {
+        $('#datatables').DataTable({
+            "paging": false
+        });
+
+        $('.autonum_price').autoNumeric('init', {
+            mDec: 2,
+            aDec: '.',
+            aSep: ','
+        });
+
+        $('.autonum_nondecimal').autoNumeric('init', {
+            mDec: 0,
+            aDec: '.',
+            aSep: ','
+        });
+    })
+</script>

@@ -1,0 +1,15 @@
+D:\GitHub\PlgRequest\bin\Debug\netcoreapp3.1\publish\PlgRequest.exe
+D:\GitHub\PlgRequest\bin\Debug\netcoreapp3.1\publish\appsettings.Development.json
+D:\GitHub\PlgRequest\bin\Debug\netcoreapp3.1\publish\appsettings.json
+D:\GitHub\PlgRequest\bin\Debug\netcoreapp3.1\publish\PlgRequest.dll
+D:\GitHub\PlgRequest\bin\Debug\netcoreapp3.1\publish\PlgRequest.deps.json
+D:\GitHub\PlgRequest\bin\Debug\netcoreapp3.1\publish\PlgRequest.runtimeconfig.json
+D:\GitHub\PlgRequest\bin\Debug\netcoreapp3.1\publish\PlgRequest.pdb
+D:\GitHub\PlgRequest\bin\Debug\netcoreapp3.1\publish\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\GitHub\PlgRequest\bin\Debug\netcoreapp3.1\publish\Microsoft.IdentityModel.Logging.dll
+D:\GitHub\PlgRequest\bin\Debug\netcoreapp3.1\publish\Microsoft.IdentityModel.Tokens.dll
+D:\GitHub\PlgRequest\bin\Debug\netcoreapp3.1\publish\Newtonsoft.Json.dll
+D:\GitHub\PlgRequest\bin\Debug\netcoreapp3.1\publish\System.IdentityModel.Tokens.Jwt.dll
+D:\GitHub\PlgRequest\bin\Debug\netcoreapp3.1\publish\Telegram.Bot.dll
+D:\GitHub\PlgRequest\bin\Debug\netcoreapp3.1\publish\PlgRequest.Views.dll
+D:\GitHub\PlgRequest\bin\Debug\netcoreapp3.1\publish\PlgRequest.Views.pdb

@@ -1,0 +1,19 @@
+@model BudgetPeriod
+<div class="card-body">
+    <div class="col-md-12">
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label"><h3 class="card-title brand-text font-weight-light"><b>Budget Period</b></h3></label>
+            <div class="col-8" id="roleDateTime">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-calendar-check"></i></span>
+                    </div>
+                    @{
+                        var budgetPeriod = Model.BudgetMonth+"-"+Model.BudgetYear;
+                    }
+                    <input type="text" class="form-control float-right" id="budgetPeriod" value="@budgetPeriod" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

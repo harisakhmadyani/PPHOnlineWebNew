@@ -1,0 +1,45 @@
+@model ItemRequest
+<div class="col-md-12">
+    <div class="table-responsive" style="height: 500px;">
+        <table class="table table-hover dtr-inline table-head-fixed" id="datatables3">
+            <thead>
+                <tr>
+                    <th style="width: 5%;"><h3 class="card-title brand-text font-weight-light"><b>No.</b></h3></th>
+                    <th style="width: 5%;"><h3 class="card-title brand-text font-weight-light"><b>Item ID</b></h3></th>
+                    <th style="width: 5%;"><h3 class="card-title brand-text font-weight-light"><b>New Item ID</b></h3></th>
+                    <th style="width: 25%;"><h3 class="card-title brand-text font-weight-light"><b>Item Name</b></h3></th>
+                    <th style="width: 25%;"><h3 class="card-title brand-text font-weight-light"><b>Item Description</b></h3></th>
+                    <th style="width: 2%;"><h3 class="card-title brand-text font-weight-light"><b>Images</b></h3></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if(Model.data != null){
+                    int a = 1; 
+                    @foreach (var item in Model.data)
+                    {
+                        var image = item.ItemID+".jpg";
+                        <tr id='@item.ItemID'>
+                            <td>@a</td>
+                            <td>@item.ItemID</td>
+                            <td>@item.NewItemID</td>                                            
+                            <td>@item.ItemName</td>
+                            <td>@item.ItemDesc</td>
+                            <td style="text-align: center;"><a href="~/ItemImage/@image" data-toggle="lightbox" class="btn btn-success btn-icon btn-circle btn-sm"><i class="fa fa-eye"></i></a></td>
+                        </tr>  
+                        a++;   
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- ================================================ modul supplier ================================================== -->
+<script type="text/javascript">
+    $(function () {
+        $('#datatables3').DataTable({
+            "paging": false
+        });
+    })
+</script>
